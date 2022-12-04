@@ -1,0 +1,4 @@
+export CARGO_BIN=$HOME/.cargo/bin
+export DOT_LOCAL_BIN=$HOME/.local/bin
+
+export PATH=$PATH:$CARGO_BIN:$DOT_LOCAL_BIN
