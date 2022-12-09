@@ -2,3 +2,9 @@ export CARGO_BIN=$HOME/.cargo/bin
 export DOT_LOCAL_BIN=$HOME/.local/bin
 
 export PATH=$PATH:$CARGO_BIN:$DOT_LOCAL_BIN
+
+
+# alias
+alias czia="chezmoi apply"
+alias czic="chezmoi cd"
+alias czira="chezmoi re-add"
