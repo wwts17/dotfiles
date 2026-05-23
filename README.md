@@ -88,8 +88,8 @@ Fresh-machine bootstrap. Run top-to-bottom.
 
 ```bash
 # 1. Clone
-git clone git@github.com:wwts17/dotfiles.git ~/Personal/dotfiles
-cd ~/Personal/dotfiles
+git clone git@github.com:wwts17/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 
 # 2. Brew bundle (before stow — .zshrc references antidote/starship/fnm/pnpm/bash)
 brew bundle install --file=./Brewfile
