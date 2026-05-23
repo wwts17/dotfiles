@@ -14,6 +14,7 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 | `yazi/`    | `~/.config/yazi/`                                                                                                  | flavors not vendored — `ya pack -i`  |
 | `lazygit/` | `~/.config/lazygit/config.yml`                                                                                     |                                      |
 | `tig/`     | `~/.tigrc`                                                                                                         |                                      |
+| `git/`     | `~/.gitconfig`                                                                                                     | delta + `[include] ~/.gitconfig.local` for identity |
 | `Brewfile` | —                                                                                                                  | consumed by `brew bundle`, not stow  |
 
 ## Software
@@ -93,26 +94,33 @@ cd ~/Personal/dotfiles
 # 2. Brew bundle (before stow — .zshrc references antidote/starship/fnm/pnpm/bash)
 brew bundle install --file=./Brewfile
 
-# 3. Stow packages → $HOME
-stow -t ~ -n -v zsh claude nvim starship ghostty yazi lazygit tig   # dry-run
-stow -t ~    -v zsh claude nvim starship ghostty yazi lazygit tig
+# 3. Git identity → ~/.gitconfig.local (not versioned; included by git/.gitconfig).
+#    Migrate an existing ~/.gitconfig here first, or write a fresh one,
+#    so step 4's stow of git/ doesn't collide.
+[ -f ~/.gitconfig ] && ! [ -L ~/.gitconfig ] && mv ~/.gitconfig ~/.gitconfig.local
+git config -f ~/.gitconfig.local user.name  "Your Name"
+git config -f ~/.gitconfig.local user.email "you@example.com"
 
-# 4. SDKMAN — curl installer (not in Brewfile).
+# 4. Stow packages → $HOME
+stow -t ~ -n -v zsh claude nvim starship ghostty yazi lazygit tig git   # dry-run
+stow -t ~    -v zsh claude nvim starship ghostty yazi lazygit tig git
+
+# 5. SDKMAN — curl installer (not in Brewfile).
 #    rcupdate=false: zsh/.zshrc already sources sdkman-init.sh.
 #    /opt/homebrew/bin/bash: macOS ships Bash 3.2; SDKMAN rejects <4.
 curl -s "https://get.sdkman.io?rcupdate=false" | /opt/homebrew/bin/bash
 
-# 5. Install runtimes (before exec zsh — absolute paths since shell init hasn't loaded)
+# 6. Install runtimes (before exec zsh — absolute paths since shell init hasn't loaded)
 /opt/homebrew/bin/fnm install --lts
 /opt/homebrew/bin/fnm default lts-latest
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 17-tem                        # Temurin 17 (or whatever version you need)
 sdk install maven                              # latest 3.x
 
-# 6. Reload shell — every tool now in PATH, completions wire up cleanly
+# 7. Reload shell — every tool now in PATH, completions wire up cleanly
 exec zsh
 
-# 7. Yazi plugins/themes (not vendored — pulled per yazi/.config/yazi/package.toml)
+# 8. Yazi plugins/themes (not vendored — pulled per yazi/.config/yazi/package.toml)
 ya pack -i
 ```
 
@@ -131,6 +139,6 @@ First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter
 | Switch JDK / Maven            | `sdk use java <ver>` ; for auto-switch via `.sdkmanrc`, set `sdkman_auto_env=true` in `~/.sdkman/etc/config` |
 | Upgrade SDKMAN candidates     | `sdk upgrade` lists upgrades → `sdk install <candidate> <ver>`                                     |
 | Update yazi flavors           | `ya pack -u`                                                                                       |
-| Secrets / machine-local       | Put in `~/.zshrc.local` / `~/.zprofile.local` — sourced automatically, not versioned               |
+| Secrets / machine-local       | Put in `~/.zshrc.local` / `~/.zprofile.local` (sourced) or `~/.gitconfig.local` (included) — not versioned |
 
 Always dry-run (`-n -v`) before any real `stow`. **Never use** `stow --adopt` — it overwrites repo contents with whatever is currently in `$HOME`.

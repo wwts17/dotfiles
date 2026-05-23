@@ -20,6 +20,8 @@ fi
 }
 
 command -v starship >/dev/null && eval "$(starship init zsh)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+command -v fzf >/dev/null && source <(fzf --zsh)
 
 # === runtimes & PATH ===
 # fnm: --use-on-cd auto-switches Node version per directory (.nvmrc / .node-version)
