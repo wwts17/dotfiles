@@ -15,6 +15,7 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 | `lazygit/` | `~/.config/lazygit/config.yml`                                                                                     |                                      |
 | `tig/`     | `~/.tigrc`                                                                                                         |                                      |
 | `git/`     | `~/.gitconfig`                                                                                                     | delta + `[include] ~/.gitconfig.local` for identity |
+| `pixi/`    | `~/.pixi/manifests/pixi-global.toml`                                                                              | global CLI envs (python, uv); `pixi global sync` to apply |
 | `Brewfile` | —                                                                                                                  | consumed by `brew bundle`, not stow  |
 
 ## Software
