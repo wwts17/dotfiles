@@ -1,0 +1,28 @@
+gui:
+  showRandomTip: false
+  showCommandLog: false
+  nerdFontsVersion: "3"
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+  pull:
+    rebase: true
+  autoFetch: true
+  fetchAll: true
+os:
+  edit: "nvim {{filename}}"
+  editAtLine: "nvim +{{line}} {{filename}}"
+customCommands:
+  - key: 'P'
+    command: 'git push --force-with-lease'
+    context: 'global'
+    description: 'Force push with lease'
+    prompts:
+      - type: 'confirm'
+        title: 'Force push?'
+        body: 'Force-push-with-lease this branch?'
+  - key: 'F'
+    command: 'git commit --fixup={{.SelectedLocalCommit.Sha}}'
+    context: 'commits'
+    description: 'Fixup selected commit'

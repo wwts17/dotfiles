@@ -1,0 +1,15 @@
+set show-changes    = true
+set ignore-space    = at-eol
+set wrap-lines      = true
+set refresh-mode    = auto
+set vertical-split  = auto
+
+set main-view  = id:yes,width:8 date:display=relative author:display=abbreviated,width=10 commit-title:graph=yes,refs=yes,overflow=no
+set blame-view = date:display=relative author:display=abbreviated,width=10 id:yes,width:8 line-number:yes,interval=5 text
+set log-view   = line-number:no,interval=5 text
+set diff-view  = line-number:no,interval=5 text:commit-title-overflow=no
+
+bind generic g  move-first-line
+bind generic G  move-last-line
+bind main    G  move-last-line
+bind generic y  @sh -c "echo -n %(commit) | pbcopy"
