@@ -31,6 +31,8 @@ Runtimes live outside brew, managed by version managers:
 | Maven | `sdk install maven` | build tool |
 | Node LTS | `fnm install --lts` | actual Node runtime |
 
+Go is the exception — it lives in `Brewfile` (`brew "go"`), not behind a version manager. Per-project versions are handled by Go 1.21+'s built-in **GOTOOLCHAIN**: the `go` line in a project's `go.mod` drives an automatic download/switch, so one brew-managed `go` is enough.
+
 ## Install
 
 Fresh-machine bootstrap. Run top-to-bottom.
@@ -88,6 +90,7 @@ First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter
 | Add a brew formula            | Edit `Brewfile` → `brew bundle install --file=./Brewfile`                                          |
 | Switch Node version           | `cd <proj>` auto-switches if `.nvmrc` present, else `fnm use <ver>`                                |
 | Switch JDK / Maven            | `sdk use java <ver>` ; for auto-switch via `.sdkmanrc`, set `sdkman_auto_env=true` in `~/.sdkman/etc/config` |
+| Switch Go version             | Set the `go` line in `go.mod` (e.g. `go 1.23.0`) — GOTOOLCHAIN auto-downloads/uses it; no manual install                  |
 | New Python project            | `cd <proj>` → `pixi init` → `pixi add python <pkg>...` ; enter env with `pixi shell`, one-off with `pixi run <cmd>` |
 | Install a global CLI tool     | `pixi global install <tool>` (lands in `~/.pixi/bin`, already on PATH)                              |
 | Upgrade SDKMAN candidates     | `sdk upgrade` lists upgrades → `sdk install <candidate> <ver>`                                     |

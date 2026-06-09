@@ -49,6 +49,17 @@ esac
 # completion: not eval'd — pixi ships a #compdef file (brew installs it to
 # $(brew --prefix)/share/zsh/site-functions, already on fpath) that compinit autoloads.
 
+# go: `go install` drops binaries in $(go env GOBIN), default $HOME/go/bin. Put it
+# on PATH so those tools are callable. Per-project Go versions are handled by Go
+# 1.21+'s built-in GOTOOLCHAIN (reads the `go` line in go.mod, auto-downloads) — no
+# version manager needed. Guarded so a fresh-machine bootstrap doesn't break.
+if command -v go >/dev/null; then
+  case ":$PATH:" in
+    *":$HOME/go/bin:"*) ;;
+    *) export PATH="$HOME/go/bin:$PATH" ;;
+  esac
+fi
+
 export PATH="$HOME/.local/bin:$PATH"
 
 # sdkman: JDK / Maven / Gradle version manager. Init last among PATH tools so

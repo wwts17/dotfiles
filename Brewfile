@@ -22,6 +22,9 @@ brew "pnpm"        # Node package manager (content-addressable store)
 # --- Python toolchain ---
 brew "pixi"        # Python env / package manager (conda + PyPI; per-project envs, `pixi global` tools → ~/.pixi/bin)
 
+# --- Go toolchain ---
+brew "go"          # Go compiler + tools; per-project versions handled by Go 1.21+ GOTOOLCHAIN (reads go.mod, auto-downloads)
+
 # --- Yazi + its preview/peek deps ---
 brew "yazi"
 brew "ffmpeg"      # video/audio preview
