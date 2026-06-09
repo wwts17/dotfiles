@@ -26,14 +26,11 @@
       "Bash(*rm -rf *\\**)",
       "Bash(*rm -r *\\**)",
       "Bash(*rm -f *\\**)"
-    ],
-    "defaultMode": "auto"
+    ]
   },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
-  "effortLevel": "high",
-  "tui": "default",
-  "skipAutoPermissionPrompt": true
+  "tui": "default"
 }
