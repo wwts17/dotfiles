@@ -16,7 +16,9 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 | `tig/`     | `~/.tigrc`                                                                                                         |                                      |
 | `git/`     | `~/.gitconfig`                                                                                                     | delta + `[include] ~/.gitconfig.local` for identity |
 | `pixi/`    | `~/.pixi/manifests/pixi-global.toml`                                                                              | global CLI envs (python, uv); `pixi global sync` to apply |
+| `scripts/` | —                                                                                                                  | `install.sh` (bootstrap) · `doctor.sh` (environment check) |
 | `Brewfile` | —                                                                                                                  | consumed by `brew bundle`, not stow  |
+| `.github/` | —                                                                                                                  | GitHub Actions CI syntax & lint workflows |
 
 ## Software
 
@@ -34,6 +36,16 @@ Runtimes live outside brew, managed by version managers:
 Go is the exception — it lives in `Brewfile` (`brew "go"`), not behind a version manager. Per-project versions are handled by Go 1.21+'s built-in **GOTOOLCHAIN**: the `go` line in a project's `go.mod` drives an automatic download/switch, so one brew-managed `go` is enough.
 
 ## Install
+
+### Option A: Automated One-Line Bootstrap (Recommended)
+
+```bash
+git clone git@github.com:wwts17/dotfiles.git ~/dotfiles && cd ~/dotfiles
+bash scripts/install.sh
+bash scripts/doctor.sh   # Run diagnosis to verify environment health
+```
+
+### Option B: Manual Step-by-Step Installation
 
 Fresh-machine bootstrap. Run top-to-bottom.
 
