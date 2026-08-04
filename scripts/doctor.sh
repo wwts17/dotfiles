@@ -17,17 +17,17 @@ PASS_COUNT=0
 WARN_COUNT=0
 FAIL_COUNT=0
 
-check_pass() { printf "  ${GREEN}✓ [PASS]${NC} %s\n" "$*"; PASS_COUNT=$((PASS_COUNT + 1)); }
-check_warn() { printf "  ${YELLOW}⚠ [WARN]${NC} %s\n" "$*"; WARN_COUNT=$((WARN_COUNT + 1)); }
-check_fail() { printf "  ${RED}✗ [FAIL]${NC} %s\n" "$*"; FAIL_COUNT=$((FAIL_COUNT + 1)); }
+check_pass() { printf "  %b[PASS]%b %s\n" "${GREEN}" "${NC}" "$*"; PASS_COUNT=$((PASS_COUNT + 1)); }
+check_warn() { printf "  %b[WARN]%b %s\n" "${YELLOW}" "${NC}" "$*"; WARN_COUNT=$((WARN_COUNT + 1)); }
+check_fail() { printf "  %b[FAIL]%b %s\n" "${RED}" "${NC}" "$*"; FAIL_COUNT=$((FAIL_COUNT + 1)); }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-printf "${BOLD}=== Dotfiles Environment Health Doctor ===${NC}\n\n"
+printf "%b=== Dotfiles Environment Health Doctor ===%b\n\n" "${BOLD}" "${NC}"
 
 # 1. OS & Architecture Check
-printf "${BLUE}▶ Checking Operating System...${NC}\n"
+printf "%b▶ Checking Operating System...%b\n" "${BLUE}" "${NC}"
 if [[ "$(uname -s)" == "Darwin" ]]; then
   check_pass "macOS ($(uname -m)) detected."
 else
@@ -35,7 +35,7 @@ else
 fi
 
 # 2. Stow Symlink Verification
-printf "\n${BLUE}▶ Checking Symlinks (Stow managed)...${NC}\n"
+printf "\n%b▶ Checking Symlinks (Stow managed)...%b\n" "${BLUE}" "${NC}"
 SYMLINKS=(
   "$HOME/.zshrc"
   "$HOME/.zprofile"
@@ -60,7 +60,7 @@ for link in "${SYMLINKS[@]}"; do
 done
 
 # 3. CLI Binary & Toolchain Availability
-printf "\n${BLUE}▶ Checking Core CLI Toolchains...${NC}\n"
+printf "\n%b▶ Checking Core CLI Toolchains...%b\n" "${BLUE}" "${NC}"
 TOOLS=(brew stow antidote starship fnm pnpm pixi go yazi lazygit tig nvim delta rg fd fzf zoxide jq)
 for tool in "${TOOLS[@]}"; do
   if command -v "$tool" >/dev/null 2>&1; then
@@ -71,7 +71,7 @@ for tool in "${TOOLS[@]}"; do
 done
 
 # 4. Version Managers & Runtime Environments
-printf "\n${BLUE}▶ Checking Version Managers...${NC}\n"
+printf "\n%b▶ Checking Version Managers...%b\n" "${BLUE}" "${NC}"
 if [[ -d "$HOME/.sdkman" ]]; then
   check_pass "SDKMAN! directory present at ~/.sdkman"
 else
@@ -85,7 +85,7 @@ else
 fi
 
 # 5. Shell Syntax Validation
-printf "\n${BLUE}▶ Validating Shell Syntax...${NC}\n"
+printf "\n%b▶ Validating Shell Syntax...%b\n" "${BLUE}" "${NC}"
 if zsh -n "$DOTFILES_DIR/zsh/.zshrc" 2>/dev/null; then
   check_pass "zsh/.zshrc syntax valid."
 else
@@ -105,13 +105,13 @@ else
 fi
 
 # Summary
-printf "\n${BOLD}=== Doctor Diagnosis Summary ===${NC}\n"
-printf "${GREEN}Passed:${NC} %d | ${YELLOW}Warnings:${NC} %d | ${RED}Failed:${NC} %d\n" "$PASS_COUNT" "$WARN_COUNT" "$FAIL_COUNT"
+printf "\n%b=== Doctor Diagnosis Summary ===%b\n" "${BOLD}" "${NC}"
+printf "%bPassed:%b %d | %bWarnings:%b %d | %bFailed:%b %d\n" "${GREEN}" "${NC}" "$PASS_COUNT" "${YELLOW}" "${NC}" "$WARN_COUNT" "${RED}" "${NC}" "$FAIL_COUNT"
 
 if [[ $FAIL_COUNT -eq 0 ]]; then
-  printf "\n${GREEN}${BOLD}Your dotfiles environment is healthy!${NC}\n"
+  printf "\n%bYour dotfiles environment is healthy!%b\n" "${GREEN}${BOLD}" "${NC}"
   exit 0
 else
-  printf "\n${RED}${BOLD}Some critical checks failed. Please address the issues listed above.${NC}\n"
+  printf "\n%bSome critical checks failed. Please address the issues listed above.%b\n" "${RED}${BOLD}" "${NC}"
   exit 1
 fi

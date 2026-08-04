@@ -14,10 +14,10 @@ BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
-log_info()  { printf "${BLUE}[INFO]${NC} %s\n" "$*"; }
-log_succ()  { printf "${GREEN}[SUCCESS]${NC} %s\n" "$*"; }
-log_warn()  { printf "${YELLOW}[WARN]${NC} %s\n" "$*"; }
-log_err()   { printf "${RED}[ERROR]${NC} %s\n" "$*"; }
+log_info()  { printf "%b[INFO]%b %s\n" "${BLUE}" "${NC}" "$*"; }
+log_succ()  { printf "%b[SUCCESS]%b %s\n" "${GREEN}" "${NC}" "$*"; }
+log_warn()  { printf "%b[WARN]%b %s\n" "${YELLOW}" "${NC}" "$*"; }
+log_err()   { printf "%b[ERROR]%b %s\n" "${RED}" "${NC}" "$*"; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
