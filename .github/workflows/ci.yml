@@ -1,0 +1,38 @@
+name: Dotfiles CI & Code Quality
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-validate:
+    name: Lint Scripts and Validate Configs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Shell Syntax (zsh / bash)
+        run: |
+          sudo apt-get update && sudo apt-get install -y zsh shellcheck
+          echo "=== Checking Shell Syntax with zsh -n ==="
+          zsh -n zsh/.zshrc
+          zsh -n zsh/.zprofile
+          echo "=== Checking Shell Scripts with shellcheck ==="
+          shellcheck scripts/*.sh
+
+      - name: Validate TOML and YAML Syntax
+        run: |
+          python3 -c "import tomllib; tomllib.load(open('starship/.config/starship.toml', 'rb'))"
+          python3 -c "import tomllib; tomllib.load(open('yazi/.config/yazi/yazi.toml', 'rb'))"
+          python3 -c "import yaml; yaml.safe_load(open('lazygit/.config/lazygit/config.yml'))"
+          echo "All configuration files passed syntax validation!"
+
+      - name: Test Stow Dry-Run
+        run: |
+          sudo apt-get install -y stow
+          stow -t "$HOME" -n -v zsh claude nvim starship ghostty yazi lazygit tig git
+          echo "Stow dry-run executed successfully!"
