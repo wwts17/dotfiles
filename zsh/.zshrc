@@ -80,3 +80,7 @@ function y() {
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 alias lz="lazygit"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/hugo/.local/bin:$PATH"
