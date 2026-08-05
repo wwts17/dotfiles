@@ -1,0 +1,8 @@
+# Stow local ignore file (Perl regex patterns)
+__pycache__
+\.pyc$
+\.DS_Store
+\.log$
+tmp/
+logs/
+\.system_generated/
