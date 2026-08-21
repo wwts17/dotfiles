@@ -59,6 +59,14 @@ symbol = " "
 
 [directory]
 read_only = " 󰌾"
+# --- personal override ---
+# 显示项目的上一级目录（本地有多个同名项目时需要区分）。
+# truncate_to_repo=false: 不截断到 git 仓库根，路径始终从 ~ 起算
+# truncation_length=3 + fish_style_pwd_dir_length=1: 保留最后 3 段完整名，
+# 更前面的父目录缩成首字母（~/K/h/src/main/java），路径不丢且不会太长
+truncate_to_repo = false
+truncation_length = 3
+fish_style_pwd_dir_length = 1
 
 [docker_context]
 symbol = " "
