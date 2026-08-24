@@ -19,3 +19,8 @@ exposed = { ".graphviz-post-link" = ".graphviz-post-link", acyclic = "acyclic", 
 channels = ["conda-forge"]
 dependencies = { mysql = "*" }
 exposed = { mysql = "mysql" }
+
+[envs.yq]
+channels = ["conda-forge"]
+dependencies = { yq = "*" }
+exposed = { tomlq = "tomlq", xq = "xq", yq = "yq" }
