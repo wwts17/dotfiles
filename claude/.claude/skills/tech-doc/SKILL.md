@@ -1,61 +1,26 @@
 ---
 name: tech-doc
-description: 编写、重构或评审技术文档（架构设计、技术方案、API 接口契约、机制说明）。遵循 Google/AWS 技术写作最佳实践（结论先行 BLUF、循序渐进、事实核验、权衡分析）。
+description: Technical writing conventions. Use when writing or reviewing design docs, proposals, API contracts, or mechanism explanations.
 ---
 
-# 技术文档写作规范 (Technical Writing Guidelines)
+# Technical Documents
 
-## 核心原则
-采用 **BLUF (Bottom Line Up Front / 结论先行)** 与 **渐进式披露 (Progressive Disclosure)** 原则。文档优先服务读者的检索与理解需求：先给结论与摘要，再按层级展开详细设计，长表与参考下沉附录。
+## Rules
 
-## 业界最佳实践与写作规范
+- Conclusion first: the recommendation and its reason in the first paragraph; details after.
+- Progressive layering: summary → architecture → detailed design → appendix; each layer complete at its own depth.
+- Precision: paths, commands, and parameters must be exact and runnable; no "probably", "should be", or hand-waving.
+- Completeness: state non-goals explicitly; every chosen option comes with the trade-off that was accepted.
 
-### 1. 结构规范：结论先行与渐进式分层
-- **结论先行 (BLUF)**：开篇必须提供 3-5 句执行摘要，直接点明背景、核心方案与最终结论。
-- **由浅入深 (Progressive)**：按“摘要 ➔ 背景与目标 ➔ 总体架构 ➔ 核心流程与详细设计 ➔ 接口/数据契约 ➔ 权衡与代价 ➔ 附录”层级演进。
-- **附录下沉**：长表（术语表、全量错误码、边缘场景矩阵）统一放置于附录，正文仅保留关键路径。
-
-### 2. 语言与措辞规范 (Google Technical Writing Style)
-- **事实精准**：禁止含糊推测（如“大概”、“性能很好”）；必须标注具体数据与代码符号（如“超时 5s (`timeout=5000ms`)”）。
-- **术语一致**：同一概念全文使用单一标准词汇（如统一使用 `Account`，禁用 `User/Member` 混用）。
-- **言简意赅**：使用陈述句与现在时，消除无意义的修饰词与冗余过渡句，不说黑话废话，不造生词。
-
-### 3. 完整性规范 (Trade-offs & Edge Cases)
-- **必须写明代价与缺口**：每个关键设计必须包含“解决问题 ➔ 实现方案 ➔ 权衡与副作用 ➔ 应对策略”。无缺点分析的技术方案是不合格的。
-- **单份自洽**：文档需具备独立阅读性，前置必备条件与假设，不依赖未定义的外部隐式上下文。
-
-## 标准技术文档结构模板
+## Example skeleton
 
 ```markdown
-# <项目/机制名称> 技术设计说明
+# <Title>
 
-## 执行摘要 (Executive Summary)
-- **背景**：[一句话说明为什么做]
-- **核心方案**：[一句话说明选定的技术路线]
-- **关键结论/收益**：[一句话说明结果或指标提升]
+**Conclusion**: We will do X because Y; the accepted cost is Z.
 
-## 1. 背景与目标
-- **业务/技术背景**：解决的问题与现状痛点。
-- **设计目标**：可量化指标（Must-have）。
-- **非目标 (Non-Goals)**：明确本次不覆盖的范围。
-
-## 2. 总体架构与机制概览
-- **系统拓扑/组件分层**：整体结构说明（配架构图）。
-- **核心设计原则**：3-5 条关键指导原则。
-
-## 3. 核心流程与详细设计
-- **3.1 主时序流程**：核心交互时序图与节点说明。
-- **3.2 状态机与控制流**：状态迁移逻辑与判定规则。
-
-## 4. 接口与数据契约
-- **API 接口声明**：请求/响应示例及关键字段说明。
-- **数据存储设计**：核心 DDL、索引意图与缓存策略。
-
-## 5. 权衡分析与已知缺口 (Trade-offs & Known Limits)
-- **方案权衡**：[选择此方案的优势] vs [引入的副作用/复杂度]。
-- **已知缺口与应对**：[极端情况下的降级/熔断预案]。
-
-## 附录 (Appendices)
-- **附录 A：错误码与边界表**：全量错误码映射与边界场景矩阵。
-- **附录 B：术语与参考链接**：相关规范与名词定义。
+## Background    — the problem and its constraints
+## Design        — data structures and flows first, then components
+## Trade-offs    — options considered, and why they were rejected
+## Non-goals     — what this deliberately does not solve
 ```

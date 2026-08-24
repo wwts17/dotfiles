@@ -1,34 +1,33 @@
-# Claude 全局指令
+# Global Engineering Instructions
 
-## 工作准则
+## Engineering principles (always apply)
 
-- **不臆测、不编造。** 不确定就查或问;不编造不存在的 API、文件、字段、命令,宁可说"不确定"。
-- **验证后才说完成。** 测试或构建通过了才声明"完成";失败如实贴输出;跳过的步骤要讲明。
-- **改前先读,优先复用。** 编辑前先读相关代码和现有写法;能复用已有实现就不另造轮子。
-- **最小改动。** 只改被要求的;不顺手重构或动无关代码。
-- **简单至上。** 选能解决问题的最简方案,不加用不上的抽象和投机性设计。
+- Clear is better than clever. Readability comes first — no cryptic one-liners, no hidden magic.
+- Data dominates. Choose the right data structures and organize things well; the algorithms will almost always be self-evident.
+- When in doubt, use brute force. Fancy algorithms are buggier, have big constants, and n is usually small.
+- Measure. Don't tune for speed until you've measured, and even then don't unless one part of the code overwhelms the rest.
+- Errors are values — program with them like any other value. Handle them gracefully; never swallow them; don't use exceptions for business control flow.
+- Keep it simple. Pick the simplest design that works; add nothing the current requirement doesn't need.
+- Test first. No behavior change without a failing test; no bug fix without a reproducing test.
+- Think before debugging. Identify which invariant broke and fix it at the source, not at the error site.
 
-## 硬规则
+## Working rules
 
-- **永不 `git push`**——用户手动推送
-- **永不用通配符 `rm`**(`rm *`、`rm -rf *`)——按名删除具体文件或目录可以
+- Don't guess or invent APIs, files, fields, or commands. Verify, or say you're unsure.
+- Claim "done" only after tests or builds pass; report failures with their output; state any skipped steps.
+- Read the relevant code before editing; reuse what exists; make the smallest change that works.
 
-## 工具链
+## Hard rules
 
-- **Node / JS**:`fnm` 管版本(`.nvmrc`/`.node-version`),`pnpm` 装包与执行脚本;不用 npm/yarn/nvm。
-- **Java / Maven**:SDKMAN 管 JDK 与 Maven,`mvn` 执行构建与测试;不用 brew 装 JDK。
-- **Python**:`pixi` 管环境与包(`pixi add`、`pixi run`、`pixi shell`),全局 CLI 用 `pixi global install`;不用 pip/conda/venv/brew。
+- Never `git push` — the user pushes manually.
+- Never wildcard `rm` (`rm *`, `rm -rf *`) — delete specific named files or directories only.
 
-## 思维工具(按需调用)
+## Toolchain
 
-复杂、新颖、高风险的问题才用,别套在简单任务上。各 skill 会按描述自动触发,也可手动调用:
+- Node/JS: `fnm` for versions (`.nvmrc`/`.node-version`), `pnpm` for packages and scripts. No npm/yarn/nvm.
+- Java/Maven: SDKMAN for JDK and Maven, `mvn` for builds and tests. No brew-installed JDK.
+- Python: `pixi` for environments and packages (`pixi add`/`run`/`shell`), `pixi global install` for CLI tools. No pip/conda/venv/brew.
 
-- `/mece-decomposition`——把模糊问题拆成不重不漏的子问题
-- `/first-principles`——剥到不可再问的事实,从底层重建
-- `/systems-thinking`——用存量/流量/反馈环/杠杆点看反复出现的问题
-- `/probabilistic-thinking`——用基率/期望值/贝叶斯更新做不确定决策
-- `/deep-analysis`——四步串联(上面四个),用于真正棘手的问题
+## Delivery check
 
-## 交付前自检
-
-交付重要产出(skill / 技术文档 / 计划 / 代码)前,对照 `/quality-review` 的标准过一遍再发。
+- Before delivering significant output (code, docs, plans, config), delegate a review to the `reviewer` agent.
