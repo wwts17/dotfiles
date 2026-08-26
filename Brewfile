@@ -10,6 +10,7 @@ brew "tree-sitter" # incremental parser (neovim syntax/highlight)
 brew "starship"    # shell prompt
 brew "stow"        # symlink farm manager (bootstraps this repo)
 brew "jq"          # JSON processor (used by claude statusline)
+brew "shellcheck"  # shell script linter (CI runs it over scripts/*.sh)
 brew "fd"          # faster find
 brew "ripgrep"     # faster grep
 brew "fzf"         # fuzzy finder
