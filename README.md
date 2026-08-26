@@ -11,7 +11,7 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 | `nvim/`    | `~/.config/nvim/`                                                                                                  | NvChad base, lazy.nvim + Mason       |
 | `starship/`| `~/.config/starship.toml`                                                                                          |                                      |
 | `ghostty/` | `~/.config/ghostty/`                                                                                               |                                      |
-| `yazi/`    | `~/.config/yazi/`                                                                                                  | flavors not vendored — `ya pack -i`  |
+| `cmux/`    | `~/.config/cmux/cmux.json`                                                                                         | JSONC; keys here override the app's Settings UI |
 | `lazygit/` | `~/.config/lazygit/config.yml`                                                                                     |                                      |
 | `tig/`     | `~/.tigrc`                                                                                                         |                                      |
 | `git/`     | `~/.gitconfig`                                                                                                     | delta + `[include] ~/.gitconfig.local` for identity |
@@ -67,8 +67,8 @@ git config -f ~/.gitconfig.local user.name  "Your Name"
 git config -f ~/.gitconfig.local user.email "you@example.com"
 
 # 4. Stow packages → $HOME
-stow -t ~ -n -v zsh claude nvim starship ghostty yazi lazygit tig git   # dry-run
-stow -t ~    -v zsh claude nvim starship ghostty yazi lazygit tig git
+stow -t ~ -n -v zsh claude nvim starship ghostty cmux lazygit tig git   # dry-run
+stow -t ~    -v zsh claude nvim starship ghostty cmux lazygit tig git
 
 # 5. SDKMAN — curl installer (not in Brewfile).
 #    rcupdate=false: zsh/.zshrc already sources sdkman-init.sh.
@@ -84,9 +84,6 @@ sdk install maven                              # latest 3.x
 
 # 7. Reload shell — every tool now in PATH, completions wire up cleanly
 exec zsh
-
-# 8. Yazi plugins/themes (not vendored — pulled per yazi/.config/yazi/package.toml)
-ya pack -i
 ```
 
 First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter binaries listed in `nvim/.config/nvim/lua/plugins/init.lua` under `ensure_installed`. Wait ~30s, then everything is wired.
@@ -106,7 +103,6 @@ First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter
 | New Python project            | `cd <proj>` → `pixi init` → `pixi add python <pkg>...` ; enter env with `pixi shell`, one-off with `pixi run <cmd>` |
 | Install a global CLI tool     | `pixi global install <tool>` (lands in `~/.pixi/bin`, already on PATH)                              |
 | Upgrade SDKMAN candidates     | `sdk upgrade` lists upgrades → `sdk install <candidate> <ver>`                                     |
-| Update yazi flavors           | `ya pack -u`                                                                                       |
 | Secrets / machine-local       | Put in `~/.zshrc.local` / `~/.zprofile.local` (sourced) or `~/.gitconfig.local` (included) — not versioned |
 
 Always dry-run (`-n -v`) before any real `stow`. **Never use** `stow --adopt` — it overwrites repo contents with whatever is currently in `$HOME`.

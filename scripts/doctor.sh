@@ -42,7 +42,6 @@ SYMLINKS=(
   "$HOME/.config/starship.toml"
   "$HOME/.config/ghostty"
   "$HOME/.config/nvim"
-  "$HOME/.config/yazi"
   "$HOME/.config/lazygit/config.yml"
   "$HOME/.gitconfig"
   "$HOME/.claude"
@@ -61,7 +60,7 @@ done
 
 # 3. CLI Binary & Toolchain Availability
 printf "\n%b▶ Checking Core CLI Toolchains...%b\n" "${BLUE}" "${NC}"
-TOOLS=(brew stow antidote starship fnm pnpm pixi go yazi lazygit tig nvim delta rg fd fzf zoxide jq)
+TOOLS=(brew stow antidote starship fnm pnpm pixi go lazygit tig nvim delta rg fd fzf zoxide jq)
 for tool in "${TOOLS[@]}"; do
   if command -v "$tool" >/dev/null 2>&1; then
     check_pass "CLI available: $tool ($(command -v "$tool"))"

@@ -10,6 +10,7 @@ brew "tree-sitter" # incremental parser (neovim syntax/highlight)
 brew "starship"    # shell prompt
 brew "stow"        # symlink farm manager (bootstraps this repo)
 brew "jq"          # JSON processor (used by claude statusline)
+brew "shellcheck"  # shell script linter (CI runs it over scripts/*.sh)
 brew "fd"          # faster find
 brew "ripgrep"     # faster grep
 brew "fzf"         # fuzzy finder
@@ -25,19 +26,19 @@ brew "pixi"        # Python env / package manager (conda + PyPI; per-project env
 # --- Go toolchain ---
 brew "go"          # Go compiler + tools; per-project versions handled by Go 1.21+ GOTOOLCHAIN (reads go.mod, auto-downloads)
 
-# --- Yazi + its preview/peek deps ---
-brew "yazi"
-brew "ffmpeg"      # video/audio preview
-brew "sevenzip"    # archive preview (7zz)
-brew "poppler"     # PDF preview
-brew "imagemagick" # image preview
-brew "resvg"       # SVG preview
-brew "chafa"       # terminal image fallback (when KGP/Sixel probe fails)
+# --- Docs & conversion ---
+brew "pandoc"      # markup format converter (md/docx/html/...)
+brew "weasyprint"  # HTML -> PDF renderer
+
+# --- macOS utilities ---
+brew "duti"        # set default apps for file types / URL schemes from the CLI
+brew "mole"        # disk cleanup / Mac optimizer
+
+# --- Cloud & networking ---
+cask "gcloud-cli"  # Google Cloud SDK (gcloud/gsutil/bq)
+cask "ngrok"       # reverse proxy, public tunnels to localhost
 
 # --- GUI ---
 cask "ghostty"     # terminal emulator
 cask "cmux"        # Ghostty-based GUI w/ AI-agent vertical tabs (reuses ghostty config)
-cask "orbstack"    # Docker / k8s runtime (lightweight Docker Desktop replacement)
 cask "rectangle"   # window snapping
-cask "stats"       # menu-bar system monitor
-cask "iina"        # video player (yazi opener for video/*)

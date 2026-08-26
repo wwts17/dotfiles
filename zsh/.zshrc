@@ -67,20 +67,11 @@ export PATH="$HOME/.local/bin:$PATH"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
-# === functions ===
-function y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  command yazi "$@" --cwd-file="$tmp"
-  IFS= read -r -d '' cwd < "$tmp"
-  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-  command rm -f -- "$tmp"
-}
+# === aliases ===
+alias lz="lazygit"
 
 # === local override ===
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-
-alias lz="lazygit"
-
 
 # Added by Antigravity CLI installer
 export PATH="/Users/hugo/.local/bin:$PATH"

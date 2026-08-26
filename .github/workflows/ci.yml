@@ -27,12 +27,11 @@ jobs:
       - name: Validate TOML and YAML Syntax
         run: |
           python3 -c "import tomllib; tomllib.load(open('starship/.config/starship.toml', 'rb'))"
-          python3 -c "import tomllib; tomllib.load(open('yazi/.config/yazi/yazi.toml', 'rb'))"
           python3 -c "import yaml; yaml.safe_load(open('lazygit/.config/lazygit/config.yml'))"
           echo "All configuration files passed syntax validation!"
 
       - name: Test Stow Dry-Run
         run: |
           sudo apt-get install -y stow
-          stow -t "$HOME" -n -v zsh claude nvim starship ghostty yazi lazygit tig git
+          stow -t "$HOME" -n -v zsh claude nvim starship ghostty cmux lazygit tig git
           echo "Stow dry-run executed successfully!"

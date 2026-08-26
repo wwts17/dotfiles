@@ -56,7 +56,7 @@ fi
 
 # 5. Stow Symlinks
 log_info "Stowing dotfile packages into $HOME..."
-STOW_PKGS=(zsh claude nvim starship ghostty yazi lazygit tig git)
+STOW_PKGS=(zsh claude nvim starship ghostty cmux lazygit tig git)
 cd "$DOTFILES_DIR"
 for pkg in "${STOW_PKGS[@]}"; do
   if [[ -d "$pkg" ]]; then
@@ -78,12 +78,6 @@ if command -v fnm >/dev/null 2>&1; then
   log_info "Setting up Node.js LTS via fnm..."
   fnm install --lts || true
   fnm default lts-latest || true
-fi
-
-# 8. Yazi plugins & themes
-if command -v ya >/dev/null 2>&1; then
-  log_info "Installing Yazi plugins & themes..."
-  ya pack -i || log_warn "ya pack -i encountered an issue."
 fi
 
 log_succ "Dotfiles bootstrap completed successfully!"
