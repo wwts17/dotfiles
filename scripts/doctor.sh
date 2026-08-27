@@ -45,6 +45,9 @@ SYMLINKS=(
   "$HOME/.config/lazygit/config.yml"
   "$HOME/.gitconfig"
   "$HOME/.claude"
+  "$HOME/.gemini/GEMINI.md"
+  "$HOME/.gemini/ANTIGRAVITY.md"
+  "$HOME/.gemini/antigravity-cli/skills"
   "$HOME/.tigrc"
 )
 

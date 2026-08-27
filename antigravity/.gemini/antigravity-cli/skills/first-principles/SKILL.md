@@ -1,21 +1,22 @@
 ---
 name: first-principles
-description: Deconstruct assumptions down to fundamental truths and rebuild solutions from foundational axioms. Activate when legacy conventions fail, performance hits a wall, or novel architecture is required.
+description: Strip a design down to hard constraints and rebuild from them. Use when a design is justified mainly by precedent — "we've always done it this way".
 ---
 
-# First-Principles Reasoning
+# First Principles
 
-Deconstruct complex challenges by separating verified physical/code facts from analogies and historical assumptions.
+Refuse conclusions inherited from convention or analogy. Reduce the problem to facts that cannot be decomposed further, then rebuild from the bottom up.
 
-## Execution Framework
+## Steps
 
-1. **Identify Assumptions:** List all conventional wisdom, inherited patterns, and implicit assumptions surrounding the problem.
-2. **Socratic Deconstruction:** Challenge each assumption by asking: *"Is this demonstrably true, or is it an inherited convention?"*
-3. **Isolate Foundational Axioms:** Strip away superficial layers until reaching indisputable facts (e.g., CPU/disk limits, API contracts, mathematical truths).
-4. **Bottom-Up Synthesis:** Rebuild the solution starting exclusively from foundational axioms, unconstrained by historical implementations.
+1. List the currently accepted solution or convention under question.
+2. Identify the assumptions it rests on — technical, cost, and process.
+3. Challenge each assumption; keep only physical, mathematical, or contract-level hard constraints.
+4. Rebuild the design from those constraints alone.
 
-## Deliverable Format
+## Output
 
-- **Inherited Assumptions vs Verified Axioms Table**
-- **First-Principles Solution Design**
-- **Key Tradeoffs & Invariants**
+- Current convention: [the conclusion being questioned]
+- Assumptions: [assumption → still valid / obsolete, with the reason]
+- Hard constraints: [facts that cannot be argued away]
+- Rebuilt design: [what the constraints alone imply, and the improvement over the convention]

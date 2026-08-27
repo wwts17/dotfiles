@@ -56,7 +56,7 @@ fi
 
 # 5. Stow Symlinks
 log_info "Stowing dotfile packages into $HOME..."
-STOW_PKGS=(zsh claude nvim starship ghostty cmux lazygit tig git)
+STOW_PKGS=(zsh claude antigravity nvim starship ghostty cmux lazygit tig git)
 cd "$DOTFILES_DIR"
 for pkg in "${STOW_PKGS[@]}"; do
   if [[ -d "$pkg" ]]; then

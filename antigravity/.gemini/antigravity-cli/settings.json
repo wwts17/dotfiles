@@ -1,7 +1,7 @@
 {
   "allowNonWorkspaceAccess": true,
   "enableTelemetry": false,
-  "model": "Gemini 3.6 Flash (High)",
+  "model": "Gemini 3.7 Flash (High)",
   "statusLine": {
     "type": "command",
     "command": "/Users/hugo/.gemini/antigravity-cli/statusline.sh",
@@ -11,6 +11,9 @@
     "/Users/hugo/Kakashi/Divination/BackEnd",
     "/Users/hugo",
     "/Users/hugo/Kakashi/hormoneAI",
-    "/Users/hugo/dotfiles"
+    "/Users/hugo/dotfiles",
+    "/Users/hugo/Projects/Divination/BackEnd",
+    "/Users/hugo/Downloads",
+    "/Users/hugo/personal/mondx-radar"
   ]
 }

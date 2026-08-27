@@ -1,23 +1,22 @@
 ---
 name: systems-thinking
-description: Analyze recurring issues using feedback loops, stocks, flows, and high-leverage intervention points. Activate when debugging cascading failures, race conditions, or chronic technical debt.
+description: Model a problem as stocks, flows, and feedback loops to find the highest-leverage intervention. Use when the same problem keeps coming back after fixes.
 ---
 
-# Systems Thinking Analysis
+# Systems Thinking
 
-Analyze system behavior holistically by identifying feedback loops, delay nodes, and systemic leverage points.
+Model a recurring problem as stocks, flows, feedback loops, and delays; intervene at the highest-leverage point instead of patching symptoms.
 
-## Execution Framework
+## Steps
 
-1. **Map System Elements:** Identify key Stocks (state accumulations), Flows (rates of change), and Boundaries.
-2. **Identify Feedback Loops:**
-   - **Reinforcing Loops (Positive):** Exponential growth or runaway cascades (e.g., retry storms).
-   - **Balancing Loops (Negative):** Stabilizing mechanisms or throttling bounds.
-3. **Pinpoint Delays & Bottlenecks:** Locate lag points where feedback signals are delayed, causing oscillations or overshooting.
-4. **Identify Leverage Points:** Find intervention points where small, targeted changes yield system-wide improvements.
+1. Name the stocks (what accumulates) and the flows (what changes them).
+2. Trace the feedback loops: reinforcing loops (growth or collapse) and balancing loops (stabilizing).
+3. Locate the delays — they explain oscillation and overshoot.
+4. Choose the intervention point with the most leverage: usually a loop or a rule, rarely a parameter.
 
-## Deliverable Format
+## Output
 
-- **Causal Loop Diagram (Mermaid)**
-- **Systemic Bottlenecks & Oscillations**
-- **High-Leverage Intervention Strategy**
+- Stocks and flows: [what accumulates, what drives it]
+- Loops: [reinforcing R1 ..., balancing B1 ...]
+- Delays: [where effects lag their causes]
+- Leverage point: [where to intervene, and why it beats fixing the symptom]
