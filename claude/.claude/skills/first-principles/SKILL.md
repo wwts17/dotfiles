@@ -1,3 +1,8 @@
+---
+name: first-principles
+description: Strip a design down to hard constraints and rebuild from them. Use when a design is justified mainly by precedent — "we've always done it this way".
+---
+
 # First Principles
 
 Refuse conclusions inherited from convention or analogy. Reduce the problem to facts that cannot be decomposed further, then rebuild from the bottom up.

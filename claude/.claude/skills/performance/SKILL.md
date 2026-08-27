@@ -8,7 +8,7 @@ description: Performance tuning workflow. Use when a running system has become s
 ## When to use
 
 A running system got slower, or a measured metric misses its target.
-Not for: speculative optimization while writing new code — write the direct implementation first (see the coding rules).
+Not for: speculative optimization while writing new code — write the direct implementation first (see the coding skill).
 
 ## Steps
 

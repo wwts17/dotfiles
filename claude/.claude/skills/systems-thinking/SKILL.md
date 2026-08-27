@@ -1,3 +1,8 @@
+---
+name: systems-thinking
+description: Model a problem as stocks, flows, and feedback loops to find the highest-leverage intervention. Use when the same problem keeps coming back after fixes.
+---
+
 # Systems Thinking
 
 Model a recurring problem as stocks, flows, feedback loops, and delays; intervene at the highest-leverage point instead of patching symptoms.

@@ -37,9 +37,11 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   },
+  "askUserQuestionTimeout": "5m",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
+  "verbose": false,
   "autoMode": {
     "environment": [
       "### Org-wide",
@@ -65,7 +67,7 @@
       "**Primary use of Claude Code**: personal/hobby use — macOS dotfiles and toolchain configuration management",
       "**Trusted repo**: /Users/hugo/dotfiles (working directory) and its origin remote github.com:wwts17/dotfiles.git — repo is PUBLIC, so only this repo's own work is OK to push there; confidential/personal/credential material is never cleared into it regardless of visibility",
       "**Org-specific CLIs**: None configured — repo-standard toolchain CLIs used routinely: stow, fnm, pnpm, sdk (SDKMAN), pixi, brew, starship",
-      "routine under /Users/hugo/dotfiles/ prefix: stow package operations, brew bundle, toolchain version-manager invocations (fnm, sdk, pixi)"
+      "**Routine local operations**: under /Users/hugo/dotfiles/ — stow package operations, brew bundle, toolchain version-manager invocations (fnm, sdk, pixi)"
     ]
   }
 }

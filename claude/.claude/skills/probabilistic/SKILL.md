@@ -1,3 +1,8 @@
+---
+name: probabilistic
+description: Compare options by expected value and set measurable triggers to revisit. Use for a decision under uncertainty with real stakes.
+---
+
 # Probabilistic Decision
 
 Decide under uncertainty using base rates, evidence updates, and expected value. Judge decisions by the quality of the process, not by a single outcome.

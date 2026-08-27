@@ -1,3 +1,8 @@
+---
+name: mece
+description: Split a problem into mutually exclusive, collectively exhaustive dimensions. Use when a problem is vague or too large to act on and its scope is unclear.
+---
+
 # MECE Decomposition
 
 Split a problem into sub-dimensions that are Mutually Exclusive and Collectively Exhaustive — no overlap, nothing missing.

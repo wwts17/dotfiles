@@ -1,31 +1,28 @@
 ---
 name: thinking
-description: Structured reasoning for hard problems — decomposing ambiguous requirements, challenging inherited assumptions, recurring systemic issues, decisions under uncertainty, or major trade-off and root-cause analysis.
+description: Runs the four reasoning models in order — MECE, first principles, systems thinking, probabilistic decision. Use for a major refactor, a technology choice, or an incident root-cause analysis, where one model alone is not enough.
 ---
 
-# Thinking Models
+# Thinking
 
 ## When to use
 
-Problems that are complex, novel, or high-risk.
-Not for: routine tasks a direct answer serves.
+A problem worth four rounds of analysis: a major refactor, a technology choice, an
+incident root-cause analysis.
+Not for: a problem one model already answers — trigger that model directly
+(mece, first-principles, systems-thinking, probabilistic).
 
-## Picking a model
+## The chain
 
-| Signal | Model | Details |
-|---|---|---|
-| Ambiguous or sprawling problem, unclear scope | MECE decomposition | references/mece.md |
-| A design justified mainly by precedent ("we've always done it this way") | First principles | references/first-principles.md |
-| The same problem keeps coming back after fixes | Systems thinking | references/systems-thinking.md |
-| A decision under uncertainty with real stakes | Probabilistic decision | references/probabilistic.md |
+Run in order; each step's output is the next step's input.
 
-Read the reference file only when applying that model.
+1. `mece` — split the problem into non-overlapping, exhaustive dimensions.
+   Output: the dimension list.
+2. `first-principles` — for each dimension, strip inherited assumptions down to
+   hard constraints. Output: the constraint list.
+3. `systems-thinking` — under those constraints, find the feedback loops and the
+   highest-leverage intervention point. Output: the intervention point.
+4. `probabilistic` — compare interventions by expected value and set measurable
+   triggers to revisit. Output: the decision and its triggers.
 
-## Hard problems: chain all four
-
-For major refactors, technology selection, or incident root-cause analysis, run in order, each step feeding the next:
-
-1. MECE: split the problem into non-overlapping, exhaustive dimensions.
-2. First principles: strip inherited assumptions down to hard constraints.
-3. Systems thinking: find the feedback loops and the highest-leverage intervention point.
-4. Probabilistic decision: compare options by expected value; set measurable triggers to revisit.
+Each step's method lives in its own skill; this file only fixes the order.

@@ -8,14 +8,14 @@ description: Root-cause localization for defects and test failures. Use when som
 ## When to use
 
 A defect or failing test whose cause is unknown.
-Not for: fixes whose cause is already known (follow the test discipline in the coding rules), or the same class of problem recurring after fixes — that is a structural issue, use thinking.
+Not for: fixes whose cause is already known (follow the test discipline in the coding skill), or the same class of problem recurring after fixes — that is a structural issue, use thinking.
 
 ## Steps
 
 1. Build a minimal reproduction before touching any code.
 2. State the invariant: what should the system guarantee here, and which guarantee is broken?
 3. Form a mental model of the path from input to failure; bisect along it to where the invariant first breaks.
-4. Stop at the source. Fix it there, following the test discipline in the coding rules — the reproduction becomes the regression test.
+4. Stop at the source. Fix it there, following the test discipline in the coding skill — the reproduction becomes the regression test.
 
 ## Anti-patterns
 
