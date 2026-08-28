@@ -1,0 +1,16 @@
+{
+  "permission-guard": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.gemini/antigravity-cli/hooks/pre_tool_use.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

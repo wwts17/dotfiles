@@ -1,9 +1,10 @@
 # Antigravity configuration
 
-Stow package deployed to `~/.gemini/`. Two layers, following the memory/skills split:
+Stow package deployed to `~/.gemini/`. Three layers, following the memory/skills/hooks split:
 
 - `GEMINI.md` / `ANTIGRAVITY.md` — hard rules, the three silent-failure rules, and the toolchain; loaded every session. A rule earns its place here only if breaking it fails without anyone noticing.
 - `skills/` — everything that loads on demand: coding, debugging, performance, tech-doc, git-commits, thinking and its four models (mece, first-principles, systems-thinking, probabilistic), and reviewer.
+- `config/hooks.json` + `antigravity-cli/hooks/pre_tool_use.py` — execution lifecycle and permission guardrails; auto-approves pure read-only inspection commands and hard-blocks dangerous commands.
 
 ## Maintenance conventions
 

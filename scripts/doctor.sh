@@ -47,6 +47,9 @@ SYMLINKS=(
   "$HOME/.claude"
   "$HOME/.gemini/GEMINI.md"
   "$HOME/.gemini/ANTIGRAVITY.md"
+  "$HOME/.gemini/config/hooks.json"
+  "$HOME/.gemini/antigravity-cli/settings.json"
+  "$HOME/.gemini/antigravity-cli/hooks"
   "$HOME/.gemini/antigravity-cli/skills"
   "$HOME/.tigrc"
 )
