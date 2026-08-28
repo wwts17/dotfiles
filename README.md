@@ -6,7 +6,7 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 
 | Package    | Lays down                                                                                                          | Notes                                |
 | ---------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| `zsh/`     | `~/.zshrc` · `~/.zprofile` · `~/.zsh_plugins.txt`                                                                  | antidote-managed plugins             |
+| `zsh/`     | `~/.zshrc` · `~/.zprofile` · `~/.zsh_plugins.txt`                                                                  | antidote-managed plugins; `localprox` proxy toggle |
 | `claude/`  | `~/.claude/{CLAUDE.md, settings.json, statusline-command.sh, agents/, skills/}`                                    | global prefs + skills                |
 | `nvim/`    | `~/.config/nvim/`                                                                                                  | NvChad base, lazy.nvim + Mason       |
 | `starship/`| `~/.config/starship.toml`                                                                                          |                                      |
@@ -103,6 +103,8 @@ First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter
 | New Python project            | `cd <proj>` → `pixi init` → `pixi add python <pkg>...` ; enter env with `pixi shell`, one-off with `pixi run <cmd>` |
 | Install a global CLI tool     | `pixi global install <tool>` (lands in `~/.pixi/bin`, already on PATH)                              |
 | Upgrade SDKMAN candidates     | `sdk upgrade` lists upgrades → `sdk install <candidate> <ver>`                                     |
+| Toggle the local proxy        | `localprox on\|off\|status` — sets the `*_proxy` vars, persists the choice, and restarts the container daemon so it re-snapshots the env |
+| Start the container runtime   | `container system start` (or `localprox on`). Not a login service — `brew services start container` respawns endlessly and drops the proxy env |
 | Secrets / machine-local       | Put in `~/.zshrc.local` / `~/.zprofile.local` (sourced) or `~/.gitconfig.local` (included) — not versioned |
 
 Always dry-run (`-n -v`) before any real `stow`. **Never use** `stow --adopt` — it overwrites repo contents with whatever is currently in `$HOME`.

@@ -67,8 +67,87 @@ export PATH="$HOME/.local/bin:$PATH"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
+# === proxy ===
+# 本机代理。用 localprox on|off|status 切换,状态存盘,新终端沿用上次选择。
+LOCALPROX_IP="127.0.0.1"
+LOCALPROX_PORT="7897"
+LOCALPROX_STATE="${XDG_CONFIG_HOME:-$HOME/.config}/localprox/state"
+LOCALPROX_NO_PROXY="localhost,127.0.0.1,localaddress,.local,192.168.0.0/16,10.0.0.0/8"
+LOCALPROX_CONTAINER_PLIST="$HOME/Library/Application Support/com.apple.container/apiserver/apiserver.plist"
+
+_localprox_env_on() {
+  local http="http://${LOCALPROX_IP}:${LOCALPROX_PORT}"
+  local socks="socks5://${LOCALPROX_IP}:${LOCALPROX_PORT}"
+  export http_proxy="$http" HTTP_PROXY="$http" https_proxy="$http" HTTPS_PROXY="$http"
+  export all_proxy="$socks" ALL_PROXY="$socks"
+  export no_proxy="$LOCALPROX_NO_PROXY" NO_PROXY="$LOCALPROX_NO_PROXY"
+}
+
+_localprox_env_off() {
+  unset http_proxy HTTP_PROXY https_proxy HTTPS_PROXY all_proxy ALL_PROXY no_proxy NO_PROXY
+}
+
+# apple container 的守护进程只在 container system start 时读一次环境变量,快照进
+# service plist,之后不再回看,所以改完代理必须重启它才生效。没在跑就什么都不做——
+# 切代理不该顺带拉起一个虚拟机,下次手动 start 时自然会取到当时的环境。
+# 同理不能交给 brew services 托管:那个 plist 跑的是一次性命令又配了 KeepAlive,
+# 会被 launchd 反复拉起,每次都用不带代理的 launchd 环境覆盖快照。
+_localprox_restart_container() {
+  command -v container >/dev/null 2>&1 || return 0
+  container system status >/dev/null 2>&1 || return 0
+  container system stop >/dev/null 2>&1
+  container system start >/dev/null
+}
+
+_localprox_save() {
+  mkdir -p "${LOCALPROX_STATE:h}" && echo "$1" > "$LOCALPROX_STATE"
+}
+
+localprox() {
+  case "${1:-status}" in
+    on)
+      _localprox_env_on
+      _localprox_save on
+      _localprox_restart_container || { echo "container 服务启动失败,代理环境变量已生效" >&2; return 1; }
+      echo "代理已开启 ${LOCALPROX_IP}:${LOCALPROX_PORT}"
+      ;;
+    off)
+      _localprox_env_off
+      _localprox_save off
+      _localprox_restart_container || { echo "container 服务启动失败,代理环境变量已清除" >&2; return 1; }
+      echo "代理已关闭"
+      ;;
+    status)
+      echo "存盘状态    $(cat "$LOCALPROX_STATE" 2>/dev/null || echo 'on(默认,无状态文件)')"
+      echo "当前 shell  ${http_proxy:-未设置}"
+      if [ -f "$LOCALPROX_CONTAINER_PLIST" ]; then
+        echo "container   $(plutil -extract EnvironmentVariables.http_proxy raw "$LOCALPROX_CONTAINER_PLIST" 2>/dev/null || echo 未设置)"
+      fi
+      if nc -z -G 1 "$LOCALPROX_IP" "$LOCALPROX_PORT" 2>/dev/null; then
+        echo "端口探测    ${LOCALPROX_IP}:${LOCALPROX_PORT} 可连接"
+      else
+        echo "端口探测    ${LOCALPROX_IP}:${LOCALPROX_PORT} 连不上"
+      fi
+      ;;
+    *)
+      echo "用法: localprox [on|off|status]" >&2
+      return 2
+      ;;
+  esac
+}
+
+if [ "$(cat "$LOCALPROX_STATE" 2>/dev/null)" = off ]; then
+  _localprox_env_off
+else
+  _localprox_env_on
+fi
+
 # === aliases ===
 alias lz="lazygit"
+alias actr="container"
+# compinit fills _comps only once container's completion is on fpath; without the guard
+# a fresh machine reports `compdef: unknown command or service` on every shell start.
+(( $+_comps[container] )) && compdef actr=container
 
 # === local override ===
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
