@@ -26,6 +26,9 @@ brew "pixi"        # Python env / package manager (conda + PyPI; per-project env
 # --- Go toolchain ---
 brew "go"          # Go compiler + tools; per-project versions handled by Go 1.21+ GOTOOLCHAIN (reads go.mod, auto-downloads)
 
+# --- Containers ---
+brew "container"   # Apple's Linux container runtime (lightweight VMs); not a brew service — see the proxy block in zsh/.zshrc
+
 # --- macOS utilities ---
 brew "duti"        # set default apps for file types / URL schemes from the CLI
 brew "mole"        # disk cleanup / Mac optimizer
