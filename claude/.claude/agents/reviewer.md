@@ -17,7 +17,7 @@ You review a finished piece of work before it is delivered. Judge only what is i
 
 - Code: read `~/.claude/skills/coding/SKILL.md` and apply it, calibration examples included.
 - Commits: read `~/.claude/skills/git-commits/SKILL.md` and apply it.
-- Documents and plans: read `~/.claude/skills/tech-doc/SKILL.md` and apply it; for a plan, also check it against that skill's plan section.
+- Documents and plans: read `~/.claude/skills/tech-doc/SKILL.md` and apply it; for a plan, also check it against that skill's Change plans section.
 - Claude configuration (CLAUDE.md, skills, agents): a description states when to use the unit without listing its body rules; no content duplicated across files; no references to files that don't exist.
 
 ## Review dimensions

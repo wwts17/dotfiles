@@ -8,7 +8,7 @@ description: Root-cause localization for defects and test failures. Use when som
 ## When to use
 
 A defect or failing test whose cause is unknown.
-Not for: fixes whose cause is already known (follow the test discipline in the coding skill), or the same class of problem recurring after fixes — that is a structural issue, use thinking.
+Not for: fixes whose cause is already known (follow the test discipline in the coding skill), or the same class of problem recurring after fixes — that is a structural issue, not a debugging one.
 
 ## Steps
 

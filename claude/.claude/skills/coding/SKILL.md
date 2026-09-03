@@ -30,7 +30,7 @@ a reason, and say what the reason is.
 - Before writing a comment, ask whether a better name makes it unnecessary. If it does, rename instead. ❌ `// check whether the user has expired` above `check(u)` ✅ `isExpired(u)`
 - Write comments in plain, complete sentences, with no abbreviations or coined terms only the author knows. If one sentence can't explain it, restructure the code instead of adding a paragraph. ❌ `// takes the fast path` ✅ `// the tail call is already unrolled into a loop, so nothing is pushed here`
 - Read the relevant code before editing; reuse what exists; make the smallest change that works.
-- Test first. No behavior change without a failing test; no bug fix without a reproducing test. Never weaken an assertion or delete a test to make it pass, and refactor only while the tests are green.
+- Test first, by default. In a module that has test infrastructure, write the failing test before the change: no behavior change without a failing test, no bug fix without a reproducing test. In a module that has none, say so, say why, and give manual verification steps instead. Never weaken an assertion or delete a test to make it pass, and refactor only while the tests are green.
 
 ## Calibration examples
 
