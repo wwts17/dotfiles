@@ -6,12 +6,12 @@ Stow package deployed to `~/.claude/`. Three layers, following the official memo
 - `skills/` — everything that loads on demand: coding, debugging, performance, tech-doc, git-commits.
 - `skills-parked/` — skills removed from `~/.claude/skills` but kept in the repo: thinking and its four models (mece, first-principles, systems-thinking, probabilistic). Parked because they fired on ordinary implementation tasks and produced an analysis framework instead of a plan. Not stowed (`claude/.stow-local-ignore`); to restore one, move its directory back into `skills/`.
 - `agents/reviewer.md` — pre-delivery review in an isolated context; reads the skill files it needs rather than restating them.
-- `commands/feature.md` — `/feature`: the fixed sequence for delivering a feature. Order of calls: clarify with the user → read affected code → `skills/tech-doc` (Plan or Design) → wait for confirmation, Decisions needed answered one by one → implement with `skills/coding`, one verified step at a time → `commands/quality-review` → final report.
+- `commands/feature.md` — `/feature`: the fixed sequence for delivering a feature. Order of calls: clarify with the user → read affected code → `skills/tech-doc` (Plan or Design) → wait for confirmation, Decisions needed answered one by one → implement with `skills/coding`: a Plan one verified step at a time, a Design one stage at a time with `commands/quality-review` after each stage and the next stage gated on Must fix being empty → a final `commands/quality-review` over all the changes for cross-stage problems → final report.
 - `commands/quality-review.md` — `/quality-review`: review finished changes without editing them. Order of calls: determine the scope (argument, or the current branch against `main` with uncommitted work included) → list the changed files, one sentence each → built-in `/code-review` at effort `high`, findings listed verbatim → read the callers and existing tests of every changed function → `agents/reviewer` with the `/code-review` findings as input, verdict shown verbatim → a report of must-fix, fix-next, and what the user must do before going live.
 
 ## Plan or Design
 
-Plan when the change touches at most 3 files and adds no new data model; Design otherwise. Design adds a Spec section (behavior contract table, interface signatures, data structures) that the reviewer and the tests are checked against. Defined in `skills/tech-doc`; the `/feature` command applies it at step 3.
+Plan when the change touches at most 3 files and adds no new data model; Design otherwise. Design adds a Spec section (behavior contract table, interface signatures, data structures) that the reviewer and the tests are checked against. Defined in `skills/tech-doc`; the `/feature` command applies it at step 3. Design also adds Stages — the implementation split into independently reviewable stages — and the per-stage review gate that `/feature` enforces at step 5.
 
 ## Maintenance conventions
 

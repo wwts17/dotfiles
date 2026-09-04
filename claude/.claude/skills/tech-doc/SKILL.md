@@ -13,7 +13,11 @@ description: Technical writing conventions. Use when writing or reviewing design
 - Completeness: state non-goals explicitly; every chosen option comes with the trade-off that was accepted.
 - Plain, complete sentences. Spell out an abbreviation the first time it appears. Delete "should", "probably", and "may be" — replace them with a definite statement, or mark the item as unverified and say how to verify it.
 - Reader: a product person, or a developer who is not senior in this codebase. Explain a term in one sentence the first time it appears. No abbreviation that only the author would recognize. ❌ "bump the TTL on the LRU" ✅ "raise the cache expiry (TTL — how long an entry is kept) from 60 s to 300 s"
-- Section length: at most 10 lines per section, Spec excepted. Over the limit, remove content; do not compress the wording.
+- Section length: at most 10 lines per section, Spec and Stages excepted. Over the limit, remove content; do not compress the wording.
+- Only a decision the user has answered explicitly counts as decided. A trade-off the
+  author made, however well reasoned, stays under Decisions needed with a recommended
+  option. Renaming Decisions needed, or replacing it with a "Decided" table, to skip the
+  confirmation violates this rule.
 - Every document has a "Decisions needed" section and a "How to verify" section.
   - Decisions needed lists only trade-off questions — business, cost, risk, compatibility — each with a recommended option and its reason. Write "none" when there are none. Implementation choices (naming, data structures, how a test is written) are not questions for the reader: decide them, and state the choice in the body.
   - How to verify: a command to run or an observable outcome, one that comes out true or false.
@@ -42,6 +46,7 @@ All Plan sections, plus:
 
 ```markdown
 ## Spec              — the reference for the reviewer and the tests; exact, no gaps
+## Stages            — the implementation split into independently reviewable stages
 ## Trade-offs        — options considered, and why they were rejected
 ## Non-goals         — what this deliberately does not solve
 ```
@@ -51,6 +56,17 @@ Spec contains, in this order:
 - Behavior contract table, one row per case: `input → expected output → on error`. Include empty input and the failure path.
 - Interface signatures, as they will appear in the code.
 - Data structure definitions, with the type and meaning of every field.
+
+Stages splits the implementation into parts that can be verified and reviewed on their
+own, ordered by dependency: the foundation before what sits on it — queue semantics
+before the service that calls them, the backend before the frontend. Each stage states:
+
+- The changes it contains.
+- Its passing condition: the tests that must go green, or the observable result.
+- One sentence on what an error in this stage would cause if it leaked into the next.
+
+The split is right when a reviewer can judge one stage's changes without reading the
+others. The Plan skeleton has no Stages section — a Plan is a single stage.
 
 ## Change plans
 
