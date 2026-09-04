@@ -26,11 +26,33 @@ a reason, and say what the reason is.
 - A little copying is better than a little dependency.
 - Don't abstract until the third occurrence.
 - Make the zero value useful — a value should be usable without an init call.
-- Comments explain why, not what.
-- Before writing a comment, ask whether a better name makes it unnecessary. If it does, rename instead. ❌ `// check whether the user has expired` above `check(u)` ✅ `isExpired(u)`
-- Write comments in plain, complete sentences, with no abbreviations or coined terms only the author knows. If one sentence can't explain it, restructure the code instead of adding a paragraph. ❌ `// takes the fast path` ✅ `// the tail call is already unrolled into a loop, so nothing is pushed here`
 - Read the relevant code before editing; reuse what exists; make the smallest change that works.
 - Test first, by default. In a module that has test infrastructure, write the failing test before the change: no behavior change without a failing test, no bug fix without a reproducing test. In a module that has none, say so, say why, and give manual verification steps instead. Never weaken an assertion or delete a test to make it pass, and refactor only while the tests are green.
+
+## Comments
+
+- Default to no comment. Code explains itself through naming and structure.
+- A comment is allowed only in these three cases, and must fall into one of them:
+  a. A non-obvious constraint from outside the code — an upstream quirk, a protocol
+     requirement, a workaround with an issue link.
+  b. A deliberate deviation from the obvious implementation, with the reason.
+  c. An invariant a future editor could break that the tests would not catch.
+- Never: restating what the code does, at any level ("loop over users", "handle the
+  error"); a doc comment on a private function, or on one whose name and signature
+  already say it; section banners (`// ---- helpers ----`); adjectives and adverbs
+  (carefully, simply, robust, gracefully, properly, efficiently, and their Chinese
+  equivalents).
+- Form: one sentence, at most 15 words (30 characters in Chinese), spoken plainly.
+  Needing a second sentence means the code should be restructured instead.
+- Language: follow the comments already in the file; in a new file write them in Chinese.
+  Write Chinese comments as natural spoken sentences, not translationese such as
+  "对……进行……" or "……的处理".
+- Check before delivery: count the comments in the diff, label each one a, b, or c, and
+  delete the ones that fit none.
+
+❌ `// Carefully validate the input before processing to ensure robustness` ✅ no comment — the name `validateInput` already says it
+❌ `// Retry the request` ✅ `// upstream returns 503 during deploy windows, retry once` (case a)
+❌ `// 对用户列表进行遍历处理` ✅ no comment
 
 ## Calibration examples
 
@@ -44,7 +66,6 @@ an exhaustive list, and a case that resembles none of them is not thereby fine.
 - A little copying. ❌ adding lodash for one `groupBy` ✅ five inline lines
 - Useful zero value. ❌ `User` unusable before `.init()` ✅ `var u User` works immediately
 - Rule of three. ❌ a base class at the second similar controller ✅ wait for the third, extract what is truly shared
-- Comments explain why. ❌ `i++ // increment i` ✅ `// upstream returns 503 during deploy windows, retry once`
 
 ❌ Swallowed error, and a comment doing the naming's job:
 ```go

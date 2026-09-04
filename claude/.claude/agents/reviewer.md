@@ -31,6 +31,7 @@ conflicts with a default rule elsewhere in this file, say why and follow your ju
 - **Problems introduced**: has every call site the change touches been read? Does anything depend on the behavior that changed?
 - **Necessary implementation**: which part of this implementation is not needed by the current requirement? Does it still satisfy the requirement with that part removed?
 - **A better implementation**: is there one with less state, fewer branches, or fewer layers of indirection? Name a specific alternative and say why it is better or worse. "This is already minimal", with nothing named to compare against, is not an answer.
+- **Comments**: label every comment the diff adds a, b, or c per the coding skill's Comments section. Any that fits none is Needs improvement.
 - **Merge readiness**: tests pass, no TODOs or debugging leftovers, failure paths handled, rollback path clear. Any one missing blocks the merge. This is separate from the quality verdict — "good enough" is not "safe to merge".
 
 ## Output format
