@@ -6,7 +6,8 @@ Stow package deployed to `~/.claude/`. Three layers, following the official memo
 - `skills/` — everything that loads on demand: coding, debugging, performance, tech-doc, git-commits.
 - `skills-parked/` — skills removed from `~/.claude/skills` but kept in the repo: thinking and its four models (mece, first-principles, systems-thinking, probabilistic). Parked because they fired on ordinary implementation tasks and produced an analysis framework instead of a plan. Not stowed (`claude/.stow-local-ignore`); to restore one, move its directory back into `skills/`.
 - `agents/reviewer.md` — pre-delivery review in an isolated context; reads the skill files it needs rather than restating them.
-- `commands/feature.md` — `/feature`: the fixed sequence for delivering a feature. Order of calls: clarify with the user → read affected code → `skills/tech-doc` (Plan or Design) → wait for confirmation, Decisions needed answered one by one → implement with `skills/coding`, one verified step at a time → `agents/reviewer`, verdict shown verbatim → final report.
+- `commands/feature.md` — `/feature`: the fixed sequence for delivering a feature. Order of calls: clarify with the user → read affected code → `skills/tech-doc` (Plan or Design) → wait for confirmation, Decisions needed answered one by one → implement with `skills/coding`, one verified step at a time → `commands/quality-review` → final report.
+- `commands/quality-review.md` — `/quality-review`: review finished changes without editing them. Order of calls: determine the scope (argument, or the current branch against `main` with uncommitted work included) → list the changed files, one sentence each → built-in `/code-review` at effort `high`, findings listed verbatim → read the callers and existing tests of every changed function → `agents/reviewer` with the `/code-review` findings as input, verdict shown verbatim → a report of must-fix, fix-next, and what the user must do before going live.
 
 ## Plan or Design
 
@@ -14,7 +15,7 @@ Plan when the change touches at most 3 files and adds no new data model; Design 
 
 ## Maintenance conventions
 
-- Single source of truth: define content in one place; other files reference it by path only. The cross-references are: reviewer → `skills/coding`, `skills/git-commits`, `skills/tech-doc`; `commands/feature` → `skills/tech-doc`, `skills/coding`, `agents/reviewer`; debugging and performance → the coding skill.
+- Single source of truth: define content in one place; other files reference it by path only. The cross-references are: reviewer → `skills/coding`, `skills/git-commits`, `skills/tech-doc`; `commands/feature` → `skills/tech-doc`, `skills/coding`, `commands/quality-review`; `commands/quality-review` → the built-in `/code-review`, `agents/reviewer`; debugging and performance → the coding skill.
 - Conventions and "always do X" content go in CLAUDE.md; multi-step procedures go in skills. Don't copy one layer into the other.
 - Anything that must apply while writing code belongs in a skill, not in a user-level `rules/` directory — that directory is not loaded automatically. `.claude/rules/*.md` with `paths` frontmatter is a project-scoped mechanism.
 - An agent's `skills:` frontmatter does not put the skill body in the agent's context. Verified against 2.1.247 with a marker-phrase probe: the agent reported it had nothing preloaded. An agent that needs a skill must read its file.
