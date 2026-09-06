@@ -66,7 +66,9 @@ before the service that calls them, the backend before the frontend. Each stage 
 - One sentence on what an error in this stage would cause if it leaked into the next.
 
 The split is right when a reviewer can judge one stage's changes without reading the
-others. The Plan skeleton has no Stages section — a Plan is a single stage.
+others. The Plan skeleton has no Stages section — a Plan is a single stage. More than 5
+Reject findings in a stage's first review round means the stage was cut too large; split
+the next Design more finely.
 
 ## Change plans
 

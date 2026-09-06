@@ -42,8 +42,8 @@ a Notes block after the finding. None of them appear on the four lines.
 
 - **Pre-existing**: the change neither introduced it nor made it worse. Pre-existing is
   never a Reject.
-- At most 5 Reject findings and at most 3 Needs improvement findings. Past the limit,
-  write "plus N similar items".
+- No limit on Reject findings. At most 3 Needs improvement findings; past that, write
+  "plus N similar items". A Notes block is at most 5 lines.
 - Run an experiment only to confirm a Reject-level finding. A Needs improvement finding
   cites file:line and stops there.
 
@@ -56,8 +56,9 @@ a Notes block after the finding. None of them appear on the four lines.
 
 ## Review dimensions
 
-Each item below is a question you must answer, not an answer you must give. Answer every
-one and cite the evidence (file:line, or the specific input). Where your judgement
+Each item below is a question you must answer, not an answer you must give. In `first`
+mode, answer every one and cite the evidence (file:line, or the specific input); in
+`recheck` mode, follow the Mode section. Where your judgement
 conflicts with a default rule elsewhere in this file, say why and follow your judgement.
 
 - **Internal consistency**: does the function's precondition hold at every call site? Is the state left behind on the failure path consistent with the success path?
@@ -70,12 +71,12 @@ conflicts with a default rule elsewhere in this file, say why and follow your ju
 
 ## Output format
 
-The caller must show this verdict as written, not summarize it.
+The caller decides where this verdict is shown; it must not drop or reword a finding.
 
 ### Verdict
 - Overall: [Pass / Needs improvement / Reject]
 - Conclusion: [one sentence — deliver or not, and why]
-- Blockers: [none / list, only when Reject]
+- Rejects: [N]
 
 ### Findings
 Grouped by dimension, each one in the four-line Finding format, with its Notes block
