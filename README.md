@@ -7,7 +7,8 @@ Personal macOS config repo. Uses GNU stow for symlink farming, Homebrew for syst
 | Package    | Lays down                                                                                                          | Notes                                |
 | ---------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
 | `zsh/`     | `~/.zshrc` · `~/.zprofile` · `~/.zsh_plugins.txt`                                                                  | antidote-managed plugins             |
-| `claude/`  | `~/.claude/{CLAUDE.md, settings.json, statusline-command.sh, agents/, skills/}`                                    | global prefs + skills                |
+| `claude/`  | `~/.claude/{CLAUDE.md, settings.json, statusline-command.sh, agents/, commands/, skills/, shared/}`                | global prefs, skills, commands; also the source `antigravity/` links to |
+| `antigravity/` | `~/.gemini/{GEMINI.md, shared/, config/, antigravity-cli/}`                                                    | mostly symlinks into `claude/` — one copy of the engineering rules |
 | `nvim/`    | `~/.config/nvim/`                                                                                                  | NvChad base, lazy.nvim + Mason       |
 | `starship/`| `~/.config/starship.toml`                                                                                          |                                      |
 | `ghostty/` | `~/.config/ghostty/`                                                                                               |                                      |
@@ -67,8 +68,9 @@ git config -f ~/.gitconfig.local user.name  "Your Name"
 git config -f ~/.gitconfig.local user.email "you@example.com"
 
 # 4. Stow packages → $HOME
-stow -t ~ -n -v zsh claude nvim starship ghostty cmux lazygit tig git   # dry-run
-stow -t ~    -v zsh claude nvim starship ghostty cmux lazygit tig git
+#    claude before antigravity — antigravity's symlinks resolve into the claude package.
+stow -t ~ -n -v zsh claude antigravity nvim starship ghostty cmux lazygit tig git   # dry-run
+stow -t ~    -v zsh claude antigravity nvim starship ghostty cmux lazygit tig git
 
 # 5. SDKMAN — curl installer (not in Brewfile).
 #    rcupdate=false: zsh/.zshrc already sources sdkman-init.sh.
@@ -104,6 +106,7 @@ First `nvim` launch bootstraps lazy.nvim; Mason then auto-installs LSP/formatter
 | Install a global CLI tool     | `pixi global install <tool>` (lands in `~/.pixi/bin`, already on PATH)                              |
 | Upgrade SDKMAN candidates     | `sdk upgrade` lists upgrades → `sdk install <candidate> <ver>`                                     |
 | Run containers                | Open OrbStack.app once, then use `docker` / `docker-compose` / `kubectl` from `~/.orbstack/bin` (put on PATH by `zsh/.zshrc`) |
+| Check config health           | `bash scripts/doctor.sh` — symlinks, toolchains, shell syntax, and that no Claude-only wording leaked into the files Antigravity shares |
 | Secrets / machine-local       | Put in `~/.zshrc.local` / `~/.zprofile.local` (sourced) or `~/.gitconfig.local` (included) — not versioned |
 
 Always dry-run (`-n -v`) before any real `stow`. **Never use** `stow --adopt` — it overwrites repo contents with whatever is currently in `$HOME`.
