@@ -9,7 +9,7 @@ description: The engineering principles this repo's code follows, with worked ‚ù
 
 Implementing, reviewing, or refactoring code.
 
-The three Silent failures in `~/.claude/CLAUDE.md` are always in effect and are not
+The three Silent failures in your global instructions file are always in effect and are not
 repeated here. Everything below is a default, not a prohibition: deviate when you have
 a reason, and say what the reason is.
 
