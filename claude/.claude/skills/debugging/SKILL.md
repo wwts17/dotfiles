@@ -17,11 +17,7 @@ Not for: fixes whose cause is already known (follow the test discipline in the c
 3. Form a mental model of the path from input to failure; bisect along it to where the invariant first breaks.
 4. Stop at the source. Fix it there, following the test discipline in the coding skill — the reproduction becomes the regression test.
 
-## Anti-patterns
-
-- Scattering breakpoints or print statements at the error line, hoping something shows up.
-- Wrapping the failure in try-catch so the symptom disappears.
-- Patching the symptom where it surfaced instead of where the invariant broke.
+Not: scattering breakpoints or print statements at the error line, hoping something shows up.
 
 ## Output
 

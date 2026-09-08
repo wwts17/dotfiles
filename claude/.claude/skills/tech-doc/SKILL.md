@@ -7,12 +7,11 @@ description: Technical writing conventions. Use when writing or reviewing design
 
 ## Rules
 
-- Conclusion first: the recommendation and its reason in the first paragraph; details after.
 - Progressive layering: summary → architecture → detailed design → appendix; each layer complete at its own depth.
 - Precision: paths, commands, and parameters must be exact and runnable; no "probably", "should be", or hand-waving.
 - Completeness: state non-goals explicitly; every chosen option comes with the trade-off that was accepted.
-- Plain, complete sentences. Spell out an abbreviation the first time it appears. Delete "should", "probably", and "may be" — replace them with a definite statement, or mark the item as unverified and say how to verify it.
-- Reader: a product person, or a developer who is not senior in this codebase. Explain a term in one sentence the first time it appears. No abbreviation that only the author would recognize. ❌ "bump the TTL on the LRU" ✅ "raise the cache expiry (TTL — how long an entry is kept) from 60 s to 300 s"
+- Delete "should", "probably", and "may be" — replace them with a definite statement, or mark the item as unverified and say how to verify it.
+- Reader: a product person, or a developer who is not senior in this codebase. ❌ "bump the TTL on the LRU" ✅ "raise the cache expiry (TTL — how long an entry is kept) from 60 s to 300 s"
 - Section length: at most 10 lines per section, Spec and Stages excepted. Over the limit, remove content; do not compress the wording.
 - Only a decision the user has answered explicitly counts as decided. A trade-off the
   author made, however well reasoned, stays under Decisions needed with a recommended

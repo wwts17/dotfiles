@@ -18,11 +18,7 @@ Not for: speculative optimization while writing new code — write the direct im
 4. Re-measure with the same method and report before/after numbers.
 5. Leave everything else untouched.
 
-## Anti-patterns
-
-- Optimizing where you guess time is spent — bottlenecks occur in surprising places.
-- Claiming an optimization without before/after measurements.
-- Rewriting for speed when n is small and will stay small.
+Not: rewriting for speed when n is small and will stay small.
 
 ## Output
 
