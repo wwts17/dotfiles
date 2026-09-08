@@ -25,7 +25,7 @@ started until the previous one is complete.
    - **上线前你去核实**: what the user has to check for themselves.
    - **已驳回**: one line, `N 项，理由见报告文件`. Do not argue any of them in the chat.
 
-   Each item in the first two sections shows four lines in this order — `Outcome`, `Introduced`, `Fix`, `Where` — plus `Status: new | open since round N | deferred by user in round N`, then the `Now` and `After` code blocks from the shared Finding format. Every item carries them, in all four sections: `Now` copied verbatim out of the file with line numbers, `After` the rewritten code itself. Add no prose around them.
+   Each item in the first two sections shows four lines in this order — `Outcome`, `Introduced`, `Fix`, `Where` — plus `Status: new | open since round N | deferred by user in round N`, then the `diff` block from the shared Finding format. Every item carries one, in all four sections: `-` lines copied verbatim out of the file, `+` lines the rewritten code itself. Add no prose around them.
 
    On `recheck`, apply the previous report's `## Decisions` ledger before writing anything: an item the user deferred appears as the single line `已推迟：<Where>` and gets no card; an item the user marked won't fix does not appear at all; and when `/code-review` reports an item the ledger already covers, carry the previous round's verdict forward instead of dismissing it again.
 

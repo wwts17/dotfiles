@@ -32,28 +32,29 @@ Where: file:line
 - **Pre-existing**: the change neither introduced it nor made it worse. Pre-existing is
   never a Reject.
 
-Every finding then shows the code, at every severity. Two fenced blocks follow the five
-lines:
+Every finding then shows the code as one unified diff, at every severity. A fenced
+`diff` block follows the five lines, one hunk per cited location:
 
+````
+```diff
+@@ file:line @@
+ unchanged context line
+-the current line, copied verbatim from the file
++the same line rewritten — the change itself, not a description of it
 ```
-Now:
-<the cited lines, copied verbatim from the file, each with its line number>
+````
 
-After:
-<the same lines rewritten — the change itself, not a description of it>
-```
-
-- Copy `Now` out of the file. Never retype it from memory and never tidy it up: a quote
-  that does not match the file is a wrong finding.
-- `After` is real code the reader could paste. When the fix is a deletion, write
-  `After: (deleted)`. When the fix is a new file or a new test, drop `Now` and let
-  `After` carry the new code.
-- Each block is at most 12 lines and a finding cites at most 3 locations. When the change
-  is larger, show the lines the finding turns on and say in Notes what was left out.
+- `-` lines are copied out of the file. Never retype them from memory and never tidy
+  them up: a quote that does not match the file is a wrong finding.
+- `+` lines are real code the reader could paste. A deletion has only `-` lines; a new
+  file or a new test has only `+` lines.
+- Context lines (leading space) only where needed to locate the change. A hunk is at
+  most 12 lines and a finding has at most 3 hunks. When the change is larger, show the
+  lines the finding turns on and say in Notes what was left out.
 
 Reasoning, reproduction steps, mechanism, and any argument against another tool's
 conclusion go in a Notes block after the finding. None of them appear on the five lines
-or in the two blocks.
+or in the diff.
 
 - No limit on Reject findings. At most 3 Needs improvement findings; past that, write
   "plus N similar items". A Notes block is at most 5 lines.
@@ -92,6 +93,6 @@ The caller decides where this verdict is shown; it must not drop or reword a fin
 - Rejects: [N]
 
 ### Findings
-Grouped by dimension, each one in the five-line Finding format with its `Now` and
-`After` blocks, and its Notes block underneath when there is something to add. Write
-"none" for a dimension with no finding.
+Grouped by dimension, each one in the five-line Finding format with its diff block, and
+its Notes block underneath when there is something to add. Write "none" for a dimension
+with no finding.
