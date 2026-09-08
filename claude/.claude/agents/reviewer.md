@@ -16,13 +16,15 @@ adds only what is specific to being called from `/quality-review`.
 The caller passes `first` or `recheck`. Treat a missing mode as `first`.
 
 - **first**: answer every review dimension.
-- **recheck**: the caller also gives the path of the previous round's report. Read it and
-  take the Reject findings to check from there. Do two things and nothing else. Go
+- **recheck**: the caller also gives the path of the previous round's report. Read both
+  its Reject findings and its `## Decisions` ledger. Do two things and nothing else. Go
   through those Reject findings one at a time and mark each Closed or Still open, with
-  the evidence. Then check the files the fix touched for regressions. Do not answer
-  Necessary implementation, A better implementation, or Comments. Do not raise a new
-  finding on code the previous round did not change; if something serious is there, put
-  it under "Noticed outside scope", where it does not count as a Reject.
+  the evidence. A finding the ledger records as deferred or won't fix is not raised
+  again — report it as it stands in the ledger and move on. Then check the files the fix
+  touched for regressions. Do not answer Necessary implementation, A better
+  implementation, or Comments. Do not raise a new finding on code the previous round did
+  not change; if something serious is there, put it under "Noticed outside scope", where
+  it does not count as a Reject.
 
 ## Output format
 

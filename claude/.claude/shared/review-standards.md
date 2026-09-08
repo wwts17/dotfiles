@@ -12,24 +12,53 @@ result. This file is not a skill and does not fire on its own.
 
 ## Finding format
 
-Every finding is these four lines and nothing else:
+Every finding is these five lines and nothing else:
 
 ```
 Severity: Reject | Needs improvement | Pre-existing
-Where: file:line
-Problem: one sentence, at most 25 words
+Introduced: yes | copied | untouched
+Outcome: one sentence, at most 25 words
 Fix: one sentence, at most 25 words
+Where: file:line
 ```
 
-Reasoning, reproduction steps, and any argument against another tool's conclusion go in
-a Notes block after the finding. None of them appear on the four lines.
-
+- **Introduced**: `yes` when this change wrote the defect. `copied` when this change
+  reproduced a pattern that already existed elsewhere. `untouched` when this round did
+  not change the code at all. Anything other than `yes` is Severity `Pre-existing`.
+- **Outcome**: what an observer sees — who hits what, in which situation. Naming a class,
+  a variable, or a derivation ("the path comes from X") is a mechanism, not an outcome,
+  and does not belong on this line. Put the mechanism in Notes.
+- **Fix**: name the cost — how many lines, and whether a new test is needed.
 - **Pre-existing**: the change neither introduced it nor made it worse. Pre-existing is
   never a Reject.
+
+Every finding then shows the code, at every severity. Two fenced blocks follow the five
+lines:
+
+```
+Now:
+<the cited lines, copied verbatim from the file, each with its line number>
+
+After:
+<the same lines rewritten — the change itself, not a description of it>
+```
+
+- Copy `Now` out of the file. Never retype it from memory and never tidy it up: a quote
+  that does not match the file is a wrong finding.
+- `After` is real code the reader could paste. When the fix is a deletion, write
+  `After: (deleted)`. When the fix is a new file or a new test, drop `Now` and let
+  `After` carry the new code.
+- Each block is at most 12 lines and a finding cites at most 3 locations. When the change
+  is larger, show the lines the finding turns on and say in Notes what was left out.
+
+Reasoning, reproduction steps, mechanism, and any argument against another tool's
+conclusion go in a Notes block after the finding. None of them appear on the five lines
+or in the two blocks.
+
 - No limit on Reject findings. At most 3 Needs improvement findings; past that, write
   "plus N similar items". A Notes block is at most 5 lines.
 - Run an experiment only to confirm a Reject-level finding. A Needs improvement finding
-  cites file:line and stops there.
+  quotes the code and proposes the change like any other, but goes no further than that.
 
 ## Standards
 
@@ -63,5 +92,6 @@ The caller decides where this verdict is shown; it must not drop or reword a fin
 - Rejects: [N]
 
 ### Findings
-Grouped by dimension, each one in the four-line Finding format, with its Notes block
-underneath when there is something to add. Write "none" for a dimension with no finding.
+Grouped by dimension, each one in the five-line Finding format with its `Now` and
+`After` blocks, and its Notes block underneath when there is something to add. Write
+"none" for a dimension with no finding.
