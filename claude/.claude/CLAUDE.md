@@ -5,6 +5,10 @@
 - Never `git push` — the user pushes manually.
 - Never wildcard `rm` (`rm *`, `rm -rf *`) — delete specific named files or directories only.
 
+## Writing to the user
+
+@shared/writing.md
+
 ## Silent failures
 
 These fail without anyone noticing, so they stay loaded even when no skill is triggered.
