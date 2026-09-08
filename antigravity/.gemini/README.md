@@ -15,6 +15,13 @@ fallen several revisions behind before they were linked.
 | `antigravity-cli/skills/{coding,debugging,git-commits,performance,tech-doc}` | `claude/.claude/skills/<name>` |
 | `shared/` | `claude/.claude/shared/` |
 
+`shared/` carries both `review-standards.md` and `writing.md`; the symlink is on the
+directory, so a new file added there arrives here with no change to this package.
+`writing.md` reaches Claude because `CLAUDE.md` imports it with `@shared/writing.md`.
+Whether Antigravity expands that same `@` line in `GEMINI.md` is unverified — the path
+resolves (`~/.gemini/shared/writing.md` exists through the symlink), but the import
+syntax has not been tested here.
+
 What gets shared is decided by whether the content is about engineering or about the
 harness, not by whether the two models resemble each other. Engineering content — what
 good code is, how a comment earns its place, what a commit message says, what a review
