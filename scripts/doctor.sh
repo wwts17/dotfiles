@@ -44,16 +44,10 @@ SYMLINKS=(
   "$HOME/.config/nvim"
   "$HOME/.config/lazygit/config.yml"
   "$HOME/.gitconfig"
-  "$HOME/.claude"
-  "$HOME/.gemini/GEMINI.md"
-  "$HOME/.gemini/ANTIGRAVITY.md"
-  "$HOME/.gemini/config/hooks.json"
-  "$HOME/.gemini/antigravity-cli/settings.json"
-  "$HOME/.gemini/antigravity-cli/hooks"
-  "$HOME/.gemini/antigravity-cli/skills"
-  "$HOME/.gemini/shared"
-  "$HOME/.gemini/config/agents"
-  "$HOME/.claude/shared"
+  "$HOME/.claude/settings.json"
+  "$HOME/.claude/statusline-command.sh"
+  "$HOME/.gemini/antigravity-cli/statusline.sh"
+  "$HOME/.gemini/antigravity-cli/statusline.py"
   "$HOME/.tigrc"
 )
 
@@ -92,48 +86,7 @@ else
   check_warn "Local Git identity file ~/.gitconfig.local missing."
 fi
 
-# 5. Shared Claude/Antigravity Config
-# The antigravity package symlinks its rules, skills and shared/ into claude/.
-# A file both tools read must describe engineering, not one tool's harness: a slash
-# command, a review round or a ~/.claude path is correct for one side and dead text
-# for the other. The shared set is derived from the symlinks, so it needs no updating.
-printf "\n%b▶ Checking Shared Claude/Antigravity Config...%b\n" "${BLUE}" "${NC}"
-
-HARNESS_TERMS='/quality-review|/code-review|/feature|recheck|~/\.claude|~/\.gemini|commands/|skills-parked'
-SHARED_FILES=()
-
-while IFS= read -r link; do
-  target="$(cd "$(dirname "$link")" && cd "$(dirname "$(readlink "$link")")" 2>/dev/null && pwd)/$(basename "$(readlink "$link")")" || continue
-  case "$target" in
-    "$DOTFILES_DIR"/claude/*) ;;
-    *) continue ;;
-  esac
-  if [[ ! -e "$target" ]]; then
-    check_fail "Dead shared symlink: ${link#"$DOTFILES_DIR"/} -> $(readlink "$link")"
-    continue
-  fi
-  if [[ -d "$target" ]]; then
-    while IFS= read -r f; do SHARED_FILES+=("$f"); done < <(find "$target" -name '*.md' -type f)
-  else
-    SHARED_FILES+=("$target")
-  fi
-done < <(find "$DOTFILES_DIR/antigravity" -type l)
-
-if [[ ${#SHARED_FILES[@]} -eq 0 ]]; then
-  check_fail "No shared files found — the antigravity package no longer links into claude/."
-else
-  LEAKS=0
-  for f in "${SHARED_FILES[@]}"; do
-    if hits="$(grep -nE "$HARNESS_TERMS" "$f")"; then
-      LEAKS=$((LEAKS + 1))
-      check_fail "Harness-only wording in shared file ${f#"$DOTFILES_DIR"/}:"
-      printf "%s\n" "$hits" | sed 's/^/           /'
-    fi
-  done
-  [[ $LEAKS -eq 0 ]] && check_pass "${#SHARED_FILES[@]} shared files carry no harness-only wording."
-fi
-
-# 6. Shell Syntax Validation
+# 5. Shell Syntax Validation
 printf "\n%b▶ Validating Shell Syntax...%b\n" "${BLUE}" "${NC}"
 if zsh -n "$DOTFILES_DIR/zsh/.zshrc" 2>/dev/null; then
   check_pass "zsh/.zshrc syntax valid."
