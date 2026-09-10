@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Bash(grep:*)",
@@ -69,10 +74,5 @@
       "**Org-specific CLIs**: None configured — repo-standard toolchain CLIs used routinely: stow, fnm, pnpm, sdk (SDKMAN), pixi, brew, starship",
       "**Routine local operations**: under /Users/hugo/dotfiles/ — stow package operations, brew bundle, toolchain version-manager invocations (fnm, sdk, pixi)"
     ]
-  },
-  "attribution": {
-    "commit": "",
-    "pr": "",
-    "sessionUrl": false
   }
 }
