@@ -11,7 +11,6 @@ return {
     end,
   },
 
-  -- Treesitter: syntax/fold/indent baseline for all target languages
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
@@ -20,39 +19,35 @@ return {
         "java", "typescript", "javascript", "tsx",
         "python", "html", "css", "json",
         "go", "sql", "toml", "yaml",
-        "bash",    -- bash parser covers zsh/sh
-        "http", "graphql", -- needed by kulala.nvim
-        "markdown", "markdown_inline", -- block + inline parsers (both needed)
+        "bash",
+        "http", "graphql",
+        "markdown", "markdown_inline",
       },
     },
   },
 
-  -- Mason tooling: NvChad already declares mason.nvim itself, but plain mason
-  -- (and this NvChad version) ignore `ensure_installed` — only treesitter is
-  -- auto-installed by NvChad. mason-tool-installer is the plugin that actually
-  -- reads the list below and installs anything missing on startup, so every
-  -- LSP/formatter is managed uniformly through Mason.
+  -- mason-tool-installer installs the tools listed below; Mason alone does not.
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
-    lazy = false, -- must load at startup so run_on_start can fire (lazy=true is the NvChad default)
+    lazy = false,
     opts = {
       run_on_start = true,
       ensure_installed = {
         -- LSP servers (Mason package names)
-        "html-lsp",                   -- html
-        "css-lsp",                    -- cssls
-        "typescript-language-server", -- ts_ls
-        "pyright",                    -- python
-        "gopls",                      -- go
-        "json-lsp",                   -- jsonls
-        "yaml-language-server",       -- yamlls
-        "taplo",                      -- toml
-        "sqls",                       -- sql/mysql
-        "jdtls",                      -- java
-        "bash-language-server",       -- zsh/bash/sh
-        "marksman",                   -- markdown
-        -- Formatters / tools
+        "html-lsp",
+        "css-lsp",
+        "typescript-language-server",
+        "pyright",
+        "gopls",
+        "json-lsp",
+        "yaml-language-server",
+        "taplo",
+        "sqls",
+        "jdtls",
+        "bash-language-server",
+        "marksman",
+        -- Formatters
         "prettier",
         "black",
         "goimports",
@@ -64,7 +59,6 @@ return {
     },
   },
 
-  -- Lazygit: open in a floating window with <leader>gg, no terminal switch
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
@@ -81,22 +75,19 @@ return {
     },
   },
 
-  -- Java LSP: nvim-jdtls is the de facto wrapper for jdtls
-  -- (workspace + lifecycle handling). Config lives in lua/ftplugin/java.lua,
-  -- auto-triggered when opening a .java file.
+  -- Java setup lives in ftplugin/java.lua.
   {
     "mfussenegger/nvim-jdtls",
     ft = "java",
   },
 
-  -- Kulala: HTTP client, send requests directly from .http/.rest files
   {
     "mistweaverco/kulala.nvim",
     ft = { "http", "rest" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
-      default_view = "body",      -- response window shows body by default
-      default_env = "dev",        -- default env-vars file key
+      default_view = "body",
+      default_env = "dev",
       debug = false,
     },
     keys = {
@@ -111,15 +102,13 @@ return {
     },
   },
 
-  -- render-markdown: in-buffer rendering of headings/lists/code/tables.
-  -- Renders in normal mode, drops back to raw text in insert mode for editing.
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
-      render_modes = { "n", "c" }, -- render in normal+command, raw in insert/visual
-      heading = { sign = false },  -- no signcolumn icons, cleaner gutter
+      render_modes = { "n", "c" },
+      heading = { sign = false },
       code = { width = "block", right_pad = 2 },
     },
     keys = {
@@ -127,14 +116,10 @@ return {
     },
   },
 
-  -- markdown-preview: opens browser tab with live-rendered markdown.
-  -- For final polish / sharing / mermaid + math.
   {
     "iamcco/markdown-preview.nvim",
     ft = { "markdown" },
-    -- Use the upstream install.sh — it downloads the prebuilt binary directly
-    -- and works without node/yarn. Avoids the ft-lazy runtimepath problem
-    -- that breaks `vim.fn["mkdp#util#install"]()`.
+    -- Download the binary without Node/Yarn or a loaded plugin runtimepath.
     build = "cd app && ./install.sh",
     keys = {
       { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", ft = "markdown", desc = "Toggle browser preview" },

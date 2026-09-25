@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Dotfiles Environment Health Doctor
-# Repository: https://github.com/wwts17/dotfiles
-# ==============================================================================
 
 set -euo pipefail
 
@@ -26,7 +22,7 @@ DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 printf "%b=== Dotfiles Environment Health Doctor ===%b\n\n" "${BOLD}" "${NC}"
 
-# 1. OS & Architecture Check
+# OS & Architecture Check
 printf "%b▶ Checking Operating System...%b\n" "${BLUE}" "${NC}"
 if [[ "$(uname -s)" == "Darwin" ]]; then
   check_pass "macOS ($(uname -m)) detected."
@@ -34,36 +30,49 @@ else
   check_fail "Unsupported OS: $(uname -s). Expecting macOS."
 fi
 
-# 2. Stow Symlink Verification
+# Stow Symlink Verification
 printf "\n%b▶ Checking Symlinks (Stow managed)...%b\n" "${BLUE}" "${NC}"
-SYMLINKS=(
-  "$HOME/.zshrc"
-  "$HOME/.zprofile"
-  "$HOME/.config/starship.toml"
-  "$HOME/.config/ghostty"
-  "$HOME/.config/nvim"
-  "$HOME/.config/lazygit/config.yml"
-  "$HOME/.gitconfig"
-  "$HOME/.claude/settings.json"
-  "$HOME/.claude/statusline-command.sh"
-  "$HOME/.gemini/antigravity-cli/statusline.sh"
-  "$HOME/.gemini/antigravity-cli/statusline.py"
-  "$HOME/.tigrc"
+CONFIG_FILES=(
+  'zsh:.zshrc'
+  'zsh:.zprofile'
+  'zsh:.zsh_plugins.txt'
+  'starship:.config/starship.toml'
+  'ghostty:.config/ghostty/config'
+  'nvim:.config/nvim/init.lua'
+  'cmux:.config/cmux/cmux.json'
+  'lazygit:.config/lazygit/config.yml'
+  'git:.gitconfig'
+  'claude:.claude/settings.json'
+  'claude:.claude/statusline-command.sh'
+  'antigravity:.gemini/antigravity-cli/statusline.sh'
+  'antigravity:.gemini/antigravity-cli/statusline.py'
+  'pixi:.pixi/manifests/pixi-global.toml'
+  'tig:.tigrc'
 )
 
-for link in "${SYMLINKS[@]}"; do
-  if [[ -L "$link" ]]; then
-    check_pass "Symlink active: $link -> $(readlink "$link")"
-  elif [[ -e "$link" ]]; then
-    check_warn "File exists but is NOT a symlink: $link"
+for entry in "${CONFIG_FILES[@]}"; do
+  package=${entry%%:*}
+  relative=${entry#*:}
+  source_file="$DOTFILES_DIR/$package/$relative"
+  target_file="$HOME/$relative"
+  if [[ "$target_file" -ef "$source_file" ]]; then
+    check_pass "Managed: $relative"
+  elif [[ -e "$target_file" || -L "$target_file" ]]; then
+    check_fail "Not linked to repo: $relative"
   else
-    check_fail "Missing configuration target: $link"
+    check_fail "Missing: $relative"
   fi
 done
 
-# 3. CLI Binary & Toolchain Availability
+if [[ -f "$HOME/.gemini/antigravity-cli/settings.json" ]]; then
+  check_pass "Local Antigravity settings present."
+else
+  check_warn "Local Antigravity settings missing; see the repository example."
+fi
+
+# CLI Binary & Toolchain Availability
 printf "\n%b▶ Checking Core CLI Toolchains...%b\n" "${BLUE}" "${NC}"
-TOOLS=(brew stow antidote starship fnm pnpm pixi go lazygit tig nvim delta rg fd fzf zoxide jq)
+TOOLS=(brew stow starship fnm pnpm pixi go lazygit tig nvim delta rg fd fzf zoxide jq)
 for tool in "${TOOLS[@]}"; do
   if command -v "$tool" >/dev/null 2>&1; then
     check_pass "CLI available: $tool ($(command -v "$tool"))"
@@ -72,12 +81,19 @@ for tool in "${TOOLS[@]}"; do
   fi
 done
 
-# 4. Version Managers & Runtime Environments
-printf "\n%b▶ Checking Version Managers...%b\n" "${BLUE}" "${NC}"
-if [[ -d "$HOME/.sdkman" ]]; then
-  check_pass "SDKMAN! directory present at ~/.sdkman"
+if command -v brew >/dev/null 2>&1 &&
+   [[ -r "$(brew --prefix antidote 2>/dev/null)/share/antidote/antidote.zsh" ]]; then
+  check_pass "Antidote shell integration available."
 else
-  check_warn "SDKMAN! directory (~/.sdkman) missing."
+  check_warn "Antidote shell integration missing."
+fi
+
+# Version Managers & Runtime Environments
+printf "\n%b▶ Checking Version Managers...%b\n" "${BLUE}" "${NC}"
+if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
+  check_pass "SDKMAN! initialized at ~/.sdkman"
+else
+  check_warn "SDKMAN! init script missing."
 fi
 
 if [[ -f "$HOME/.gitconfig.local" ]]; then
@@ -86,7 +102,7 @@ else
   check_warn "Local Git identity file ~/.gitconfig.local missing."
 fi
 
-# 5. Shell Syntax Validation
+# Shell Syntax Validation
 printf "\n%b▶ Validating Shell Syntax...%b\n" "${BLUE}" "${NC}"
 if zsh -n "$DOTFILES_DIR/zsh/.zshrc" 2>/dev/null; then
   check_pass "zsh/.zshrc syntax valid."

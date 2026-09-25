@@ -4,10 +4,14 @@ import os
 import json
 import subprocess
 import time
+import tempfile
+import fcntl
 
-SLIDING_CACHE_FILE = "/tmp/antigravity_statusline_sliding.json"
+SLIDING_CACHE_FILE = os.path.join(
+    os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache")),
+    "antigravity", "statusline.json"
+)
 
-# ANSI Color sequences (Blue text)
 BLUE = "\033[38;5;75m"  # Soft bright blue
 RESET = "\033[0m"
 
@@ -89,36 +93,47 @@ def get_quota_str(quota_obj):
 
 def update_sliding_tokens(session_id, session_tokens):
     now = time.time()
-    data = {"history": []}
-
-    if os.path.exists(SLIDING_CACHE_FILE):
-        try:
-            with open(SLIDING_CACHE_FILE, 'r') as f:
-                data = json.load(f)
-        except Exception:
-            data = {"history": []}
-
-    cutoff_24h = now - 86400
-    cutoff_60s = now - 60
-
-    history = [e for e in data.get("history", []) if isinstance(e, dict) and e.get("timestamp", 0) > cutoff_24h]
-    
-    history.append({
-        "timestamp": now,
-        "session_id": str(session_id),
-        "tokens": session_tokens
-    })
-
+    cache_dir = os.path.dirname(SLIDING_CACHE_FILE)
     try:
-        with open(SLIDING_CACHE_FILE, 'w') as f:
-            json.dump({"history": history}, f)
-    except Exception:
-        pass
+        os.makedirs(cache_dir, mode=0o700, exist_ok=True)
+        with open(SLIDING_CACHE_FILE + ".lock", "a+") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            try:
+                with open(SLIDING_CACHE_FILE) as cache:
+                    data = json.load(cache)
+            except (OSError, ValueError):
+                data = {}
 
-    tokens_60s = sum(e.get("tokens", 0) for e in history if e.get("timestamp", 0) > cutoff_60s)
-    tokens_24h = sum(e.get("tokens", 0) for e in history)
+            # Old cache entries stored cumulative values; start fresh once.
+            sessions = data.get("sessions", {})
+            history = data.get("history", []) if sessions else []
+            history = [entry for entry in history if entry["timestamp"] > now - 86400]
+            sessions = {
+                key: value for key, value in sessions.items()
+                if value["seen"] > now - 7 * 86400
+            }
 
-    return tokens_60s, tokens_24h
+            key = str(session_id)
+            previous = sessions.get(key, {}).get("total", 0)
+            delta = session_tokens - previous if session_tokens >= previous else session_tokens
+            sessions[key] = {"total": session_tokens, "seen": now}
+            if delta > 0:
+                history.append({"timestamp": now, "tokens": delta})
+
+            fd, temp_path = tempfile.mkstemp(dir=cache_dir, prefix="statusline-", suffix=".json")
+            try:
+                with os.fdopen(fd, "w") as cache:
+                    json.dump({"sessions": sessions, "history": history}, cache)
+                os.replace(temp_path, SLIDING_CACHE_FILE)
+            finally:
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
+
+            tokens_60s = sum(e["tokens"] for e in history if e["timestamp"] > now - 60)
+            tokens_24h = sum(e["tokens"] for e in history)
+            return tokens_60s, tokens_24h
+    except (OSError, ValueError, KeyError, TypeError):
+        return 0, 0
 
 def extract_default_info(input_data):
     model_obj = input_data.get("model", {})
@@ -199,7 +214,6 @@ def main():
         except Exception:
             duration_s = 0.0
 
-        # Quota from official payload
         official_quota_str = get_quota_str(input_data.get("quota"))
 
         tpm, total_24h = update_sliding_tokens(session_id, session_tokens)
@@ -252,10 +266,9 @@ def main():
         else:
             full_out = left_str
 
-        # Colorize full output text in blue ANSI escape code
         colored_out = f"{BLUE}{full_out}{RESET}"
         print(colored_out)
-    except Exception as e:
+    except Exception:
         ws_name = os.path.basename(os.getcwd())
         print(f"{BLUE}{ws_name}  🟢0/m  Ctx:0.0%  Sess:0{RESET}")
 

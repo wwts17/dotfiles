@@ -1,39 +1,39 @@
-# --- Daily-driver CLI ---
-brew "bash"        # modern bash 5.x (macOS ships 3.2; needed by SDKMAN installer + most bash scripts)
-brew "antidote"    # zsh plugin manager
-brew "gh"          # GitHub CLI
-brew "tig"         # git TUI
-brew "lazygit"     # git TUI (richer than tig)
-brew "git-delta"   # pretty diff pager (used by lazygit + git)
+# Daily-driver CLI
+brew "bash"
+brew "antidote"
+brew "gh"
+brew "tig"
+brew "lazygit"
+brew "git-delta"
 brew "neovim"
-brew "tree-sitter" # incremental parser (neovim syntax/highlight)
-brew "starship"    # shell prompt
-brew "stow"        # symlink farm manager (bootstraps this repo)
-brew "jq"          # JSON processor (used by claude statusline)
-brew "shellcheck"  # shell script linter (CI runs it over scripts/*.sh)
-brew "fd"          # faster find
-brew "ripgrep"     # faster grep
-brew "fzf"         # fuzzy finder
-brew "zoxide"      # smart cd
+brew "tree-sitter"
+brew "starship"
+brew "stow"
+brew "jq"
+brew "shellcheck"
+brew "fd"
+brew "ripgrep"
+brew "fzf"
+brew "zoxide"
 
-# --- Node toolchain ---
-brew "fnm"         # Node version manager (reads .nvmrc / .node-version)
-brew "pnpm"        # Node package manager (content-addressable store)
+# Node toolchain
+brew "fnm"
+brew "pnpm"
 
-# --- Python toolchain ---
-brew "pixi"        # Python env / package manager (conda + PyPI; per-project envs, `pixi global` tools → ~/.pixi/bin)
+# Python toolchain
+brew "pixi"
 
-# --- Go toolchain ---
-brew "go"          # Go compiler + tools; per-project versions handled by Go 1.21+ GOTOOLCHAIN (reads go.mod, auto-downloads)
+# Go toolchain
+brew "go"
 
-# --- Containers ---
-cask "orbstack"    # Docker/Kubernetes + Linux VMs on macOS; ships its own docker/compose/kubectl in ~/.orbstack/bin
+# Containers
+cask "orbstack"
 
-# --- macOS utilities ---
-brew "duti"        # set default apps for file types / URL schemes from the CLI
-brew "mole"        # disk cleanup / Mac optimizer
+# macOS utilities
+brew "duti"
+brew "mole"
 
-# --- GUI ---
-cask "ghostty"     # terminal emulator
-cask "cmux"        # Ghostty-based GUI w/ AI-agent vertical tabs (reuses ghostty config)
-cask "rectangle"   # window snapping
+# GUI
+cask "ghostty"
+cask "cmux"
+cask "rectangle"

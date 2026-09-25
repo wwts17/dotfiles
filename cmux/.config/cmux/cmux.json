@@ -2,12 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
   "schemaVersion": 1,
 
-  // 此文件中的设置是 file-managed 的，会覆盖设置界面里的值。
-  // 删掉某个键即可回退到设置界面保存的值。
+  // 此处设置优先于界面设置；删除键后恢复使用界面设置。
 
   "app": {
-    // 置为 true 会隐藏 Dock 图标，使 cmux 变成 accessory 应用，
-    // 台前调度将无法管理其窗口（窗口会弹出后立即缩回）。钉死为 false。
+    // 保留 Dock 图标，避免台前调度窗口异常。
     "menuBarOnly": false,
     "preferredEditor": "nvim",
     "sendAnonymousTelemetry": false
@@ -17,7 +15,7 @@
     // 与 ~/.config/ghostty/config 的 copy-on-select 保持一致
     "copyOnSelect": true,
 
-    // 空闲 agent 终端休眠以回收内存。idleSeconds 偏小时切回终端可能有延迟，可上调。
+    // 切回终端有延迟时，可增大 idleSeconds。
     "agentHibernation": {
       "enabled": true,
       "maxLiveTerminals": 12,

@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Dotfiles Idempotent Bootstrap Installer
-# Repository: https://github.com/wwts17/dotfiles
-# ==============================================================================
 
 set -euo pipefail
 
-# ANSI Color Output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -24,61 +19,83 @@ DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 log_info "Starting dotfiles installation from: ${BOLD}${DOTFILES_DIR}${NC}"
 
-# 1. OS Verification
+# OS Verification
 if [[ "$(uname -s)" != "Darwin" ]]; then
   log_err "This dotfiles repository is optimized for macOS (Darwin). Current OS: $(uname -s)"
   exit 1
 fi
 
-# 2. Check & Install Homebrew
+# Check & Install Homebrew
 if ! command -v brew >/dev/null 2>&1; then
   log_info "Homebrew not found. Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  else
+    log_err "Homebrew installation finished, but brew was not found."
+    exit 1
+  fi
 fi
 
-# 3. Brew Bundle
+# Brew Bundle
 log_info "Installing packages from Brewfile..."
 brew bundle install --file="$DOTFILES_DIR/Brewfile"
 
-# 4. Git Local Identity Migration
+# Git Local Identity Migration
 if [[ -f "$HOME/.gitconfig" && ! -L "$HOME/.gitconfig" ]]; then
+  if [[ -e "$HOME/.gitconfig.local" ]]; then
+    log_err "Both ~/.gitconfig and ~/.gitconfig.local exist; merge them before installing."
+    exit 1
+  fi
   log_warn "Moving existing ~/.gitconfig to ~/.gitconfig.local to avoid stow collision..."
   mv "$HOME/.gitconfig" "$HOME/.gitconfig.local"
 fi
 
 if [[ ! -f "$HOME/.gitconfig.local" ]]; then
-  log_info "Creating default ~/.gitconfig.local..."
-  git config -f "$HOME/.gitconfig.local" user.name "Hugo"
-  git config -f "$HOME/.gitconfig.local" user.email "hugo@example.com"
-  log_warn "Please update your name and email in ~/.gitconfig.local"
+  log_warn "Create ~/.gitconfig.local with your Git name and email."
 fi
 
-# 5. Stow Symlinks
+# Stow Symlinks
 log_info "Stowing dotfile packages into $HOME..."
-STOW_PKGS=(zsh claude antigravity nvim starship ghostty cmux lazygit tig git)
+STOW_PKGS=(zsh claude antigravity nvim starship ghostty cmux lazygit tig git pixi)
 cd "$DOTFILES_DIR"
+stow -n -t "$HOME" "${STOW_PKGS[@]}"
 for pkg in "${STOW_PKGS[@]}"; do
   if [[ -d "$pkg" ]]; then
     log_info "Stowing package: $pkg"
-    stow -t "$HOME" -v "$pkg" 2>&1 | grep -v "BUG in find_stowed_path" || true
+    stow -t "$HOME" -v "$pkg"
   fi
 done
 
-# 6. SDKMAN Installation
-if [[ ! -d "$HOME/.sdkman" ]]; then
+ANTIGRAVITY_SETTINGS="$HOME/.gemini/antigravity-cli/settings.json"
+if [[ ! -e "$ANTIGRAVITY_SETTINGS" ]]; then
+  mkdir -p "$(dirname "$ANTIGRAVITY_SETTINGS")"
+  temp_settings=$(mktemp)
+  if jq --arg command "$HOME/.gemini/antigravity-cli/statusline.sh" \
+    '.statusLine = {type: "command", command: $command, enabled: true}' \
+    "$DOTFILES_DIR/antigravity/.gemini/antigravity-cli/settings.example.json" > "$temp_settings"; then
+    mv "$temp_settings" "$ANTIGRAVITY_SETTINGS"
+  else
+    rm -f "$temp_settings"
+    log_err "Failed to create Antigravity settings."
+    exit 1
+  fi
+fi
+
+# SDKMAN Installation
+if [[ ! -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
   log_info "Installing SDKMAN! via curl..."
-  curl -s "https://get.sdkman.io?rcupdate=false" | /opt/homebrew/bin/bash || log_warn "SDKMAN installation returned non-zero code."
+  curl -fsSL "https://get.sdkman.io?rcupdate=false" | bash
 else
   log_info "SDKMAN! is already installed at ~/.sdkman"
 fi
 
-# 7. Node LTS via fnm
-if command -v fnm >/dev/null 2>&1; then
-  log_info "Setting up Node.js LTS via fnm..."
-  fnm install --lts || true
-  fnm default lts-latest || true
-fi
+# Node LTS via fnm
+log_info "Setting up Node.js LTS via fnm..."
+fnm install --lts
+fnm default lts-latest
 
 log_succ "Dotfiles bootstrap completed successfully!"
 log_info "Run ${BOLD}bash scripts/doctor.sh${NC} to verify your environment setup."

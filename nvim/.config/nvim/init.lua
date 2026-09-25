@@ -1,7 +1,6 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
--- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not vim.uv.fs_stat(lazypath) then
@@ -13,7 +12,6 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
 
--- load plugins
 require("lazy").setup({
   {
     "NvChad/NvChad",
@@ -25,8 +23,7 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
--- Load base46 theme cache. After a wipe, NvChad regenerates it on first :Lazy sync,
--- so swallow the load error on fresh checkout instead of erroring on every startup.
+-- The theme cache may be missing before the first :Lazy sync.
 for _, name in ipairs { "defaults", "statusline" } do
   pcall(dofile, vim.g.base46_cache .. name)
 end

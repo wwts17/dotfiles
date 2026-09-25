@@ -1,4 +1,3 @@
-# Stow local ignore file (Perl regex patterns)
 __pycache__
 \.pyc$
 \.DS_Store
@@ -6,3 +5,4 @@ __pycache__
 tmp/
 logs/
 \.system_generated/
+settings\.example\.json$

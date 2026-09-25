@@ -1,15 +1,15 @@
-# --- General ---
+# General
 .DS_Store
 *.swp
 *.bak.*
 
-# --- claude/ credentials safety net ---
+# claude/ credentials safety net
 claude/.claude/.credentials.json
 claude/.claude/settings.local.json
 
-# --- zsh/ runtime caches ---
+# zsh/ runtime caches
 zsh/.zcompdump*
 zsh/.zsh_plugins.zsh
 
-# --- nvim/ plugin lockfile (machine-specific) ---
+# nvim/ plugin lockfile
 nvim/.config/nvim/lazy-lock.json

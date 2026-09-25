@@ -4,9 +4,7 @@ set -u
 
 input=$(cat)
 
-# One jq pass; join with US (0x1f) so empty fields don't collapse the way they would
-# with whitespace IFS chars like tab. (Stay 3.2-compat: script may run via /bin/bash
-# when Claude Code launches outside a brew-PATH shell.)
+# Use a non-whitespace separator to preserve empty fields; keep Bash 3.2 compatibility.
 IFS=$'\x1f' read -r five_pct five_resets week_pct week_resets sub_pct ctx_pct <<<"$(
   jq -j '
     [

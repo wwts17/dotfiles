@@ -1,23 +1,18 @@
 # dotfiles
 
-Personal macOS config repo. GNU stow lays each package down as symlinks in `$HOME`.
+个人 macOS 配置。Homebrew 安装软件，GNU Stow 将各工具目录中的配置链接到 `$HOME`。
 
-## Structure
+```sh
+bash scripts/install.sh   # 安装软件并链接配置
+bash scripts/doctor.sh    # 检查环境
+```
 
-- `zsh/` — `~/.zshrc`, `~/.zprofile`, `~/.zsh_plugins.txt`
-- `claude/` — `~/.claude/settings.json`, `~/.claude/statusline-command.sh`
-- `antigravity/` — `~/.gemini/antigravity-cli/`: `settings.json`, `statusline.sh`, `statusline.py`
-- `nvim/` — `~/.config/nvim/`
-- `starship/` — `~/.config/starship.toml`
-- `ghostty/` — `~/.config/ghostty/config`
-- `cmux/` — `~/.config/cmux/cmux.json`
-- `lazygit/` — `~/.config/lazygit/config.yml`
-- `tig/` — `~/.tigrc`
-- `git/` — `~/.gitconfig`
-- `pixi/` — `~/.pixi/manifests/pixi-global.toml`
+软件清单见 [Brewfile](Brewfile)。工具目录按 `$HOME` 下的目标路径组织，可单独应用：
 
-Not stow packages:
+```sh
+stow -t "$HOME" zsh
+```
 
-- `Brewfile` — package list read by `brew bundle`
-- `scripts/` — `install.sh` bootstrap, `doctor.sh` health check
-- `.github/` — GitHub Actions workflows
+Antigravity 的 `settings.json` 保留在本机；仓库中的 `settings.example.json` 仅供参考，Stow 不部署它。
+
+修改配置与脚本时遵循 [项目规范](AGENTS.md)。
