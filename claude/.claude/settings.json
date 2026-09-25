@@ -34,6 +34,20 @@
     ],
     "defaultMode": "auto"
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/docs/scripts/guard-context.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
@@ -42,6 +56,11 @@
     "frontend-design@claude-plugins-official": true
   },
   "feedbackDrafts": "off",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
   "askUserQuestionTimeout": "5m",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
@@ -74,5 +93,6 @@
       "**Org-specific CLIs**: None configured — repo-standard toolchain CLIs used routinely: stow, fnm, pnpm, sdk (SDKMAN), pixi, brew, starship",
       "**Routine local operations**: under /Users/hugo/dotfiles/ — stow package operations, brew bundle, toolchain version-manager invocations (fnm, sdk, pixi)"
     ]
-  }
+  },
+  "model": "claude-fable-5-1"
 }
