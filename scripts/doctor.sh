@@ -44,6 +44,7 @@ CONFIG_FILES=(
   'git:.gitconfig'
   'claude:.claude/settings.json'
   'claude:.claude/statusline-command.sh'
+  'codex:.codex/config.toml'
   'antigravity:.gemini/antigravity-cli/statusline.sh'
   'antigravity:.gemini/antigravity-cli/statusline.py'
   'pixi:.pixi/manifests/pixi-global.toml'

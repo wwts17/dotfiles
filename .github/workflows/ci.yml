@@ -28,6 +28,7 @@ jobs:
         run: |
           sudo apt-get install -y python3-yaml
           python3 -c "import tomllib; tomllib.load(open('starship/.config/starship.toml', 'rb'))"
+          python3 -c "import tomllib; tomllib.load(open('codex/.codex/config.toml', 'rb'))"
           python3 -c "import yaml; yaml.safe_load(open('lazygit/.config/lazygit/config.yml'))"
           echo "All configuration files passed syntax validation!"
 
@@ -37,5 +38,5 @@ jobs:
       - name: Test Stow Dry-Run
         run: |
           sudo apt-get install -y stow
-          stow -t "$HOME" -n -v zsh claude antigravity nvim starship ghostty cmux lazygit tig git pixi
+          stow -t "$HOME" -n -v zsh claude codex antigravity nvim starship ghostty cmux lazygit tig git pixi
           echo "Stow dry-run executed successfully!"
