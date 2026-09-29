@@ -8,10 +8,19 @@
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
-  "tui": "fullscreen",
   "modelSettings": {
     "claude-opus-5-5": {
       "effortLevel": "high"
     }
+  },
+  "permissions": {
+    "additionalDirectories": ["~/Agent-Vault"],
+    "allow": ["Edit(~/Agent-Vault/**)"],
+    "ask": ["Bash(git commit:*)"],
+    "deny": ["Bash(git push:*)"]
+  },
+  "tui": "fullscreen",
+  "enabledPlugins": {
+    "mattpocock-skills@claude-plugins-official": true
   }
 }
