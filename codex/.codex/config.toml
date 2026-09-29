@@ -81,7 +81,7 @@ gpt-6-astra = 4
 
 [desktop]
 followUpQueueMode = "steer"
-conversationDetailMode = "STEPS_COMMANDS"
+conversationDetailMode = "STEPS_PROSE"
 ambient-suggestions-enabled = true
 appearanceTheme = "dark"
 appearanceDarkCodeThemeId = "everforest"
